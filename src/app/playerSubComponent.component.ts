@@ -65,18 +65,6 @@ import { FormGroup } from '@angular/forms';
   	    	<label>Score
   	    		<input formControlName="score" type="number" />
   	    	</label>
-  	    	<label>TB
-  	    		<input formControlName="tb" type="number" />
-  	    	</label>
-  	    	<label>Points
-  	    		<input formControlName="points" type="number" />
-  	    	</label>
-  	    	<label>Buchholz
-  	    		<input formControlName="buchholz" type="number" />
-  	    	</label>
-  	    	<label>Points Difference
-  	    		<input formControlName="ptsDiff" type="number" />
-  	    	</label>
   	    </div>
     </div>
    

@@ -9,6 +9,7 @@ import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire, FirebaseListObservable
 import { TournamentDetails } from "./TournamentDetails.interface";
 import { TournamentPlayerDetails } from "./TournamentPlayerDetails.interface";
 import { PlayerSubComponent } from "./playerSubComponent.component";
+import { CalculateRanking } from "./calculateRanking.service";
 
 @Component({
 	template : `
@@ -58,7 +59,8 @@ import { PlayerSubComponent } from "./playerSubComponent.component";
 	</div>
 	`,
 	selector : "input-data-component",
-	styleUrls : ['./inputData.component.sass']
+	styleUrls : ['./inputData.component.sass'],
+	providers : [CalculateRanking]
 })
 
 export class InputDataComponent implements OnInit{
@@ -67,8 +69,9 @@ export class InputDataComponent implements OnInit{
 	tournaments$ : FirebaseListObservable<any>;
 	players$: FirebaseListObservable<any>;
 	playerList : any[] = [];
+	tournamentList : any[] = [];
 	root;
-	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref){
+	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRanking){
 		this.tournaments$ = af.database.list('/tournaments');
 		this.players$ = af.database.list('/players');
 		this.root = ref.database();
@@ -77,6 +80,8 @@ export class InputDataComponent implements OnInit{
 	}
 
 	ngOnInit(){
+
+		//this.calculateRanking.calculateRanking();
 
 		this.tournament  = this.fb.group({
 			tournamentDetails : this.fb.group({
@@ -92,23 +97,35 @@ export class InputDataComponent implements OnInit{
 
 		this.addPlayer();
 
-		
+		this.tournaments$.subscribe(tournaments => {
+			this.tournamentList = tournaments;
+		});
 		
 	}
 
 
-	onSubmit({ value  , valid } : { value : {TournamentDetails, playerFormsArray}, valid: boolean }){
+	onSubmit({ value  , valid } ){
+		let promptResult = prompt('Password Pls');
+		if(promptResult !== "graphic5"){return;}
+
 		console.log('submitted form data', value["tournamentDetails"]);
 
-			// Loop through each submitted player from the form
-			value.playerFormsArray.forEach((player) =>{
-				console.log(player);
-				this.dbUpdatePlayer(player, value["tournamentDetails"]);
-			});
-	
-
+			console.log('tl',this.tournamentList);
+			if(this.tournamentList.length > 0){
+				value.tournamentDetails.id = this.calcTournamentId(this.tournamentList);
+			}else{
+				value.tournamentDetails.id = 0;
+			}
+		
 		//push tournament data
-		this.tournaments$.push(value);
+		this.root.ref('tournaments/').child(parseInt(value.tournamentDetails.id)).set(value);
+
+		// Loop through each submitted player from the form
+		value.playerFormsArray.forEach((player) =>{
+			this.dbUpdatePlayer(player, value["tournamentDetails"]);
+		});
+			
+		this.calculateRanking.calculateRanking();
 
 	}
 	resetForm(form){
@@ -143,13 +160,7 @@ export class InputDataComponent implements OnInit{
          losses :  ['',Validators.required],
          draws :  ['',Validators.required],
          byes :  ['',Validators.required],
-         score :  ['',Validators.required],
-         tb :  ['',Validators.required],
-         points :  ['',Validators.required],
-         buchholz :  ['',Validators.required],
-         ptsDiff :  ['',Validators.required]
-
-         
+         score :  ['',Validators.required]
       });
 
 		arrayControl.push(newGroup);
@@ -168,17 +179,21 @@ export class InputDataComponent implements OnInit{
 
 		let playerRef = this.root.ref('players/');
 		
-		let colorData = {
+		let playerTournamentData = {
+			id : formTournamentData.id,
 			colors : [],
 			date : formTournamentData.date,
 			set : formTournamentData.set,
 			wins : formPlayerData.wins,
 			losses : formPlayerData.losses,
-			draws : formPlayerData.draws
+			draws : formPlayerData.draws,
+			byes : formPlayerData.byes,
+			score : formPlayerData.score,
+			place : formPlayerData.rank
 		};
 		for(let color in formPlayerData.colors){
 			if(formPlayerData.colors[color]){
-				colorData.colors.push(color);
+				playerTournamentData.colors.push(color);
 			}
 		}
 
@@ -191,13 +206,13 @@ export class InputDataComponent implements OnInit{
 
 
 
-		let calcId = function(playerList){
+		/*let calcId = function(playerList){
 			let newArray = [];
 			playerList.forEach(item =>{
 				newArray.push(item.id);
 			});
 			return (Math.max(...newArray) + 1);
-		};
+		};*/
 
 		
 			
@@ -214,7 +229,7 @@ export class InputDataComponent implements OnInit{
 					};
 					
 					playerRef.child(parseInt(formPlayerData.player)).update(playerData);
-					playerRef.child(parseInt(formPlayerData.player)).child('colorPairHistory').push(colorData);
+					playerRef.child(parseInt(formPlayerData.player)).child('tournamentHistory').child(playerTournamentData.id).set(playerTournamentData);
 				});
 				
 			// new player 
@@ -232,14 +247,32 @@ export class InputDataComponent implements OnInit{
 					'firstName' : formPlayerData.playerNameInfo.firstName,
 					'lastName' : formPlayerData.playerNameInfo.lastName,
 					'nickName' : formPlayerData.playerNameInfo.nickName,
-					'id' : calcId(this.playerList) || 0
+					'id' : this.calcId(this.playerList) || 0
 				};
 				
 				playerRef.child(parseInt(playerData.id)).set(playerData);
-				this.root.ref('players/' + playerData.id).child("colorPairHistory").push(colorData);
+				this.root.ref('players/' + playerData.id).child("tournamentHistory").push(playerTournamentData);
 			}
 
 		
 	}
+	private calcId(list){
+		let newArray = [];
+			list.forEach(item =>{
+				newArray.push(item.id);
+			});
+			console.log((Math.max(...newArray) + 1));
+			return (Math.max(...newArray) + 1);
+	}
+
+	private calcTournamentId(list){
+		let newArray = [];
+			list.forEach(item =>{
+				newArray.push(item.tournamentDetails.id);
+			});
+			//console.log('asd',...newArray,(Math.max(...newArray) + 1));
+			return (Math.max(...newArray) + 1);
+	}
+
 
 }

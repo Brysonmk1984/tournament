@@ -27,12 +27,11 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 				<h3>Player Details</h3>
 				<div class="clearfix">
 					<ul  id="detailsGroup1" class="list-group pull-left">
-						<li class="list-group-item"><strong>Player Id : </strong><span>{{selectedPlayer.id}}</span></li>
 						<li class="list-group-item"><strong>Nick Name : </strong><span>{{selectedPlayer.nickName}}</span></li>
 						<li class="list-group-item"><strong>Overall Ranking : </strong><span>{{selectedPlayer.overallRanking}}</span></li>
 						<li class="list-group-item"><strong>Power Ranking : </strong><span>{{selectedPlayer.powerRanking}}</span></li>
-						<li class="list-group-item"><strong>Overall Score : </strong><span>{{selectedPlayer.score}}</span></li>
-						
+						<li class="list-group-item"><strong>Overall Score : </strong><span>{{selectedPlayer.overallScore}}</span></li>
+						<li class="list-group-item"></li>
 					</ul>
 					<ul id="detailsGroup2" class="list-group pull-right">
 						<li class="list-group-item"><strong>1st Place FInishes : </strong><span>{{selectedPlayer.firstPlaces}}</span></li>
@@ -42,29 +41,32 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 						<li class="list-group-item"><strong>Tracking Since</strong> <span>{{selectedPlayer.trackingSince}}</span></li>
 					</ul>
 				</div>
-				<div id="colorHistory"  *ngIf="selectedPlayer.colorPairHistory">
+				<div id="colorHistory"  *ngIf="selectedPlayer.tournamentHistory">
 					<h3>Tournaments</h3>
 					<table class="table table-list table-striped">
 						<tr>
 							<th>Date</th>
 							<th>Set</th>
 							<th>Colors</th>
-							<th class="text-right">Place</th>
+							<th class="text-right">Placement</th>
+							<th class="text-right">Score</th>
 							<th class="text-right">Wins</th>
 							<th class="text-right">Losses</th>
 							<th class="text-right">Draws</th>
-							
+							<th class="text-right">Byes</th>
 						</tr>
-						<tr *ngFor="let item of selectedPlayer.colorPairHistory | keys">
+						<tr *ngFor="let item of selectedPlayer.tournamentHistory | keys">
 							<td>{{item.value.date | date}}</td>
 							<td>{{item.value.set}}</td>
 							<td>
 								{{item.value.colors}}
 							</td>
 							<td class="text-right">{{item.value.place}}</td>
+							<td class="text-right">{{item.value.score}}</td>
 							<td class="text-right">{{item.value.wins}}</td>
 							<td class="text-right">{{item.value.losses}}</td>
 							<td class="text-right">{{item.value.draws}}</td>
+							<td class="text-right">{{item.value.byes}}</td>
 						</tr>
 					</table>
 

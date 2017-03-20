@@ -18,24 +18,26 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 				<table class="table table-list table-striped">
 					<tr>
-						<th>Rank</th>
 						<th>Player</th>
+						<th>Overall Rank</th>
 						<th class="text-right">Power Rank</th>
+						<th class="text-right">1st Place FInishes</th>
+						<th class="text-right">Overall Score</th>
 						<th class="text-right">Match Wins</th>
 						<th class="text-right">Match Losses</th>
 						<th class="text-right">Match Draws</th>
-						<th class="text-right">1st Place FInishes</th>
-						<th class="text-right">Score</th>
+						
 					</tr>
 					<tr *ngFor="let player of playerList">
-						<td>{{player.overallRanking}}</td>
 						<td>{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></td>
+						<td class="text-right">{{player.overallRanking}}</td>
 						<td class="text-right">{{player.powerRanking}}</td>
+						<td class="text-right">{{player.firstPlaces}}</td>
+						<td class="text-right">{{player.overallScore}}</td>
 						<td class="text-right">{{player.matchWins}}</td>
 						<td class="text-right">{{player.matchLosses}}</td>
 						<td class="text-right">{{player.matchDraws}}</td>
-						<td class="text-right">{{player.firstPlaces}}</td>
-						<td class="text-right">{{player.score}}</td>
+						
 					</tr>
 				</table>
 			</div>

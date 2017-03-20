@@ -7,15 +7,15 @@
 		"overallRanking" : 8,
 		"powerRanking" : 8,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 1052,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":1},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":1},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":1}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":2, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":6, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":5, "rank":3, "id":3}]
 		},
 	{
 		"id" : 1,
@@ -25,15 +25,15 @@
 		"overallRanking" : 1,
 		"powerRanking" : 1,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 867,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":2},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":2},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":2}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":2, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":3, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":1, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":2, "rank":3, "id":3}]
 		},
 	{
 		"id" : 2,
@@ -43,15 +43,15 @@
 		"overallRanking" : 2,
 		"powerRanking" : 2,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 793,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":0, "byes":1,"score":2, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":5, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}]
 		},
 	{
 		"id" : 3,
@@ -61,15 +61,15 @@
 		"overallRanking" : 3,
 		"powerRanking" : 3,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 1220,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":4},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":4},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":4},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":4}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}]
 		},
 	{
 		"id" : 4,
@@ -79,15 +79,15 @@
 		"overallRanking" : 4,
 		"powerRanking" : 4,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 628,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":4},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":4},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":4},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":4}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":3, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":5, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":1, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":0, "rank":3, "id":3}]
 		},
 	{
 		"id" : 5,
@@ -97,15 +97,15 @@
 		"overallRanking" : 5,
 		"powerRanking" : 5,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 320,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":2},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":2},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":2}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":3, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":3, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":3, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}]
 		},
 	{
 		"id" : 6,
@@ -115,15 +115,15 @@
 		"overallRanking" : 6,
 		"powerRanking" : 6,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 483,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":2},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":2},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":2}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":2, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":4, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":2, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":2, "rank":3, "id":3}]
 		},
 	{
 		"id" : 7,
@@ -133,14 +133,13 @@
 		"overallRanking" : 7,
 		"powerRanking" : 7,
 		"firstPlaces" : 0,
-		"score" : 100,
+		"overallScore" : 291,
 		"matchWins" : 100,
 		"matchLosses" : 50,
 		"matchDraws" : 5,
 		"trackingSince" : "12-12-2015",
-		"colorPairHistory" : [
-			{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":2},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":2},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":2}]
+		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":4, "rank":1, "id":1},
+			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":5, "rank":4, "id":2},
+			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":1, "rank":3, "id":3}]
 		}]}
