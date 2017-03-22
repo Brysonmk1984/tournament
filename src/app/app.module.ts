@@ -20,9 +20,11 @@ import { KeysPipe } from './keys.pipe';
 
 export const ROUTES: Routes = [
 	{ path : "", component : StandingsComponent },
+	{ path : "standings", component : StandingsComponent },
 	{ path : "add", component : InputDataComponent },
 	{ path : "player", component : PlayerHistoryComponent },
-	{ path : "player/:playerid", component : PlayerHistoryComponent }
+	{ path : "player/:playerid", component : PlayerHistoryComponent },
+	{ path : "player/:playerlast", component : PlayerHistoryComponent }
 ];
 
 // Must export the config

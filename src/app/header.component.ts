@@ -3,9 +3,9 @@ import { Component } from "@angular/core";
 @Component({
 	template : `
 		<header>
-		<h1>STANDINGS</h1>
+		<h1>TOURNAMENT TRACKER</h1>
 		<nav>
-		  <a routerLink="/">Standings</a>
+		  <a routerLink="/standings">Standings</a>
 		  <a routerLink="/add">New Tournament</a>
 		  <a routerLink="/player">Player History</a>
 		</nav>
@@ -14,30 +14,65 @@ import { Component } from "@angular/core";
 	selector : "header-component",
 	styles : [`
 	    header{
-	        background : #333;
+	        background : #1f2329;
+	        border-bottom:solid 5px #f07847;
 	        
-	        
-	        line-height:50px;
-	        height:50px;
+	        line-height:65px;
+	        height:65px;
 	       
 	    }
 	   header h1{
 	   	color : white;
-	   	font-weight:normal;
-	        font-size:2em;
-	    	padding:10px 20px;
+	   	font-weight:bold;
+	      font-size:2.5em;
+	    	padding:0px;
+	    	line-height:65px;
+	    	padding-left:15px;
 	      display:inline-block;
 	    }
 	    header a{
 	    	color : white;
-	    	line-height: 50px;
+	    	line-height: 65px;
 	    	display:inline-block;
-	    	padding:0px 10px;
+	    	padding:0px 15px;
 	    	border-left: solid 1px white;
+	    	font-size:1.1em;
+	    	text-decoration:none;
 	    }
 	    header nav{
 	    	display:inline-block;
 	    	float:right;
+	    	
+	    }
+	    header a:hover{
+	    		color:#f07847 !important;
+	    		
+	    }
+	    @media (max-width:805px){
+	    	header{
+	    		height:130px;
+	    	}
+	    	header h1{
+	    		display:block;
+	    		text-align:center;
+	    		margin-bottom:0px;
+	    	}
+	    	header nav{
+	    		display:block;
+	    		text-align:center;
+	    		border-top:solid 1px white;
+	    		float:none;
+	    	}
+	    	header a{
+	   
+	    		width:32%;
+	    		display:inline-block;
+	    		
+	    		
+	    	}
+	    	header a:first-child{
+	    		border-left: none;
+	    	}
 	    }
 	`]
 })

@@ -10,16 +10,18 @@ import { Component } from "@angular/core";
 	selector : "footer-component",
 	styles : [`
 	    footer{
-	        background-color : #333;
-	        height:200px;
+	        background-color : #1f2329;
+	        height:300px;
 	        text-align:center;
 	        font-family: Arial, Helvetica, sans-serif;
 	        color: white;
-	        padding-top:100px;
+	        padding:125px;
+	        border-top:solid 5px #f07847;
 	    }
 	    footer a{
 	        color : #00688B;
 	    }
+
 
 	`]
 })

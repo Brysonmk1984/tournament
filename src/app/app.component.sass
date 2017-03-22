@@ -1,3 +1,4 @@
+
 h1 
   color: #369
   font-family: Arial, Helvetica, sans-serif
@@ -13,6 +14,8 @@ h1
 /deep/ .block
     display:block
 
+/deep/ .inline_block
+    display:inline-block !important
 
 /deep/ .clearfix:after
     visibility: hidden
@@ -33,7 +36,12 @@ h1
 /deep/ h2 
 	margin-bottom: 0px
 
+/deep/ hr
+	border-top: solid 1px #f07847
 
+/deep/ .ranked_first
+	border:solid 1px #FFD700 !important
+		
 
 @media(max-width : 739px)
   	/deep/ header

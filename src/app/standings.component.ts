@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import {Router} from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -12,14 +13,15 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 			<div class="page_title_container">
 				<h2>Overall Standings</h2>
 				<span class="subheader">Cumulative Rankings since March 25, 2017</span>
-				<br /><br />
+				<br />
+				<hr />
 			</div>
 			<div id="rankingContainer">
 
 				<table class="table table-list table-striped">
 					<tr>
-						<th>Player</th>
-						<th>Overall Rank</th>
+						<th colspan="2">Player</th>
+						<th class="text-right">Overall Rank</th>
 						<th class="text-right">Power Rank</th>
 						<th class="text-right">1st Place FInishes</th>
 						<th class="text-right">Overall Score</th>
@@ -29,7 +31,8 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 						
 					</tr>
 					<tr *ngFor="let player of playerList">
-						<td>{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></td>
+						<td (click)="playerSelected(player.id)" class=""><img [ngClass]="{ranked_first : player.overallRanking === 1}" class="profile_image img-thumbnail" src="{{player.photoUrl}}" /></td>
+						<td (click)="playerSelected(player.id)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
 						<td class="text-right">{{player.overallRanking}}</td>
 						<td class="text-right">{{player.powerRanking}}</td>
 						<td class="text-right">{{player.firstPlaces}}</td>
@@ -45,7 +48,26 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 	`,
 	selector : "standings-component",
 	styles : [`
+		.profile_image{
+			max-width:70px;
+			width:70px;
+			height:70px;
+			cursor:pointer;
+		}
+		.player_names{
+			cursor : pointer;
+		}
+		h2{
+			margin-top:0px;
+		}
 		
+		.table>tbody>tr>td{
+			vertical-align:middle;
+			font-weight:bold;
+		}
+		.table>tbody>tr>td em{
+			font-weight:normal;
+		}
 		
 	`]
 })
@@ -53,8 +75,10 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 export class StandingsComponent{
 	playerList = [];
 	allPlayers : FirebaseListObservable<any>;
-	constructor(af: AngularFire) {
-	  this.allPlayers = af.database.list('/players');
+	parentRouter;
+	constructor(af: AngularFire, router : Router) {
+		this.parentRouter = router;
+	  	this.allPlayers = af.database.list('/players');
 	}
 
 	ngOnInit(){
@@ -73,5 +97,7 @@ export class StandingsComponent{
 		  	});
 	}
 
-	
+	playerSelected(id){
+		this.parentRouter.navigateByUrl('/player/' + id);
+	}
 }
