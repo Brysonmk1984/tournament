@@ -16,26 +16,29 @@ import { CalculateRanking } from "./calculateRanking.service";
 	<div class="page_wrapper">
 		<div class="page_title_container">
 			<h2>New Tournament Results</h2>
-			<span class="subheader">Please enter the latest results from Challonge - All fields required</span>
-			<br /><br />
+			<span class="subheader">Enter the latest results from Challonge - All fields required</span>
+			<br />
+			<hr />
+			<br />
 		</div>
 
 		<div id="formContainer">
 			<form [formGroup]="tournament" (ngSubmit)="onSubmit(tournament)">
 				<div id="tournamentInputContainer" formGroupName="tournamentDetails">
-					<h3>Tournament Details</h3>
-					
-						<label>Date
-							<input formControlName="date" type="date" />
-						</label>
-					
-					
-						<label>Draft Set
-							<input formControlName="set" type="text" />
-						</label>
+					<h3>Tournament Details: </h3>
+						<div id="tournamentDetails" class="inline_block">
+							<label class="inline_block">Date
+								<input formControlName="date" type="date" class="text_input" />
+							</label>
+							<label class="inline_block">Draft Set
+								<input formControlName="set" type="text" class="text_input" />
+							</label>
+						</div>
 				</div>
 				<hr />
-				<h3 class="vertical_align_top">Player Details </h3><span><input class="btn btn-default btn_incrementer" type="button" name="addPlayer" value="+" (click)="addPlayer()" /></span>
+				<div id="playerDetails">
+					<h3 class="vertical_align_top">Participants</h3><span><div id="addPlayer" title="Add Player to This Tournament" (click)="addPlayer()"> + </div></span>
+				</div>
 				<div class="player_input_container" formArrayName="playerFormsArray">
 					<div *ngFor="let control of tournament.controls['playerFormsArray'].controls; let i = index">
 								
@@ -46,10 +49,9 @@ import { CalculateRanking } from "./calculateRanking.service";
 					
 					</div>
 				</div>
-				<hr />
 				<div class="clearfix">
 					<div id="submitContainer" class="pull-right">
-						<input class="btn btn-default" type="button"  value="Add Player" (click)="addPlayer()" />
+						<input class="btn btn-default" type="button"  value="Add Player" (click)="addPlayer()" title="Add Player to This Tournament" />
 						<input class="btn btn-default" type="button"  value="Reset" (click)="resetForm(tournament)" />
 						<input class="btn btn-primary" type="submit" value="Submit" [disabled]="tournament.invalid" title="All form fields are required"   />
 					</div>
@@ -95,6 +97,9 @@ export class InputDataComponent implements OnInit{
 			this.playerList = players
 		});
 
+		this.addPlayer();
+		this.addPlayer();
+		this.addPlayer();
 		this.addPlayer();
 
 		this.tournaments$.subscribe(tournaments => {
@@ -225,7 +230,8 @@ export class InputDataComponent implements OnInit{
 						'matchWins' : snap.matchWins + formPlayerData.wins,
 						'matchLosses' : snap.matchLosses + formPlayerData.losses,
 						'matchDraws' : snap.matchDraws + formPlayerData.draws,
-						'firstPlaces' : formPlayerData.rank === 1 ? snap.firstPlaces + 1 : snap.firstPlaces
+						'firstPlaces' : formPlayerData.rank === 1 ? snap.firstPlaces + 1 : snap.firstPlaces,
+						'trackingSince' : snap.trackingSince ? snap.trackingSince : formTournamentData.date
 					};
 					
 					playerRef.child(parseInt(formPlayerData.player)).update(playerData);
@@ -240,7 +246,7 @@ export class InputDataComponent implements OnInit{
 					'matchDraws' : formPlayerData.draws,
 					'firstPlaces' : formPlayerData.rank === 1 ? 1 : 0,
 					'trackingSince' : formTournamentData.date,
-				
+					'photoUrl' : 'http://brysonkruk.com/tournament/images/blank.jpg',
 					'score' : 0,
 					'overallRanking' : 0,
 					'powerRanking' : 0,

@@ -15,6 +15,7 @@ import { InputDataComponent } from './inputData.component';
 import { PlayerSubComponent } from "./playerSubComponent.component";
 import { PlayerHistoryComponent } from './playerHistory.component';
 import { StandingsComponent } from './standings.component';
+import { RulesComponent } from './rules.component';
 import { FooterComponent } from './footer.component';
 import { KeysPipe } from './keys.pipe';
 
@@ -23,8 +24,8 @@ export const ROUTES: Routes = [
 	{ path : "standings", component : StandingsComponent },
 	{ path : "add", component : InputDataComponent },
 	{ path : "player", component : PlayerHistoryComponent },
-	{ path : "player/:playerid", component : PlayerHistoryComponent },
-	{ path : "player/:playerlast", component : PlayerHistoryComponent }
+	{ path : "rules", component : RulesComponent },
+	{ path : "player/:playerName", component : PlayerHistoryComponent }
 ];
 
 // Must export the config
@@ -44,6 +45,7 @@ export const firebaseConfig = {
     PlayerSubComponent,
     PlayerHistoryComponent,
     StandingsComponent,
+    RulesComponent,
     FooterComponent,
     KeysPipe
   ],

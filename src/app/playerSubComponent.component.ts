@@ -7,66 +7,66 @@ import { FormGroup } from '@angular/forms';
     <div [formGroup]="tournament" >
     	<div>
   	    	<div>
-  	    		<h4>Player {{index + 1}}</h4>
-  	    		<span><input class="btn btn-default btn_decrementer" type="button" name="removePlayer" value="-" (click)="removePlayer(index)" /></span>
+  	    		<h4>Player {{index + 1}} - </h4>
+    			<select formControlName="player" id="players" (change)="selectPlayerChange($event)">
+    			 	<option value="">Select Player</option>
+    			 	<option *ngFor="let player of playerList" value="{{player.id}}">{{player.firstName}} {{player.lastName}}</option>
+    				<option value="newPlayer">New Player</option>
+    			</select>
+	  	    	<div formGroupName="colors" class="inline_block color_checkboxes">
+		  	    	<strong class="inline_block colors_title">Colors: </strong>
+		  	    	<label>Red
+		  	    		<input formControlName="red" type="checkbox" class="text_input"  />
+		  	    	</label>
+		  	    	<label>Blue
+		  	    		<input formControlName="blue" type="checkbox" class="text_input"  />
+		  	    	</label>
+		  	    	<label>White
+		  	    		<input formControlName="white" type="checkbox"  class="text_input" />
+		  	    	</label>
+		  	    	<label>Black
+		  	    		<input formControlName="black" type="checkbox" class="text_input"  />
+		  	    	</label>
+		  	    	<label>Green
+		  	    		<input formControlName="green" type="checkbox" class="text_input"  />
+		  	    	</label>
+		  	   </div>
+  	    		<div class="remove_player" (click)="removePlayer(index)" title="Remove Player">-</div>
   	    	</div>
-  	    	<label>Player
-  	    		 	<select formControlName="player" id="players" (change)="selectPlayerChange($event)">
-  	    		 		<option value="">Select Player</option>
-  	    		 		<option *ngFor="let player of playerList" value="{{player.id}}">{{player.firstName}} {{player.lastName}} {{player.id}}</option>
-  	    				<option value="newPlayer">New Player</option>
-  	    		 </select>
-  	    	</label>
+  	    	
   	    	<div formGroupName="playerNameInfo" *ngIf="newPlayer">
 	  	    	<label>First Name
-	  	    		<input formControlName="firstName" type="text" />
+	  	    		<input formControlName="firstName" type="text" class="text_input" />
 	  	    	</label>
 	  	    	<label>Last Name
-	  	    		<input formControlName="lastName" type="text" />
+	  	    		<input formControlName="lastName" type="text"  class="text_input"/>
 	  	    	</label>
 	  	    	<label>Nick Name
-	  	    		<input formControlName="nickName" type="text" />
+	  	    		<input formControlName="nickName" type="text" class="text_input" />
 	  	    	</label>
 	  	   </div>
   	    	<br />
   	    	<label>Rank
-  	    		<input formControlName="rank" type="number" />
+  	    		<input formControlName="rank" type="number" class="text_input" />
   	    	</label>
-  	    	<div formGroupName="colors" class="inline-block">
-	  	    	<strong>Colors: </strong>
-	  	    	<label>Red
-	  	    		<input formControlName="red" type="checkbox"  />
-	  	    	</label>
-	  	    	<label>Blue
-	  	    		<input formControlName="blue" type="checkbox"  />
-	  	    	</label>
-	  	    	<label>White
-	  	    		<input formControlName="white" type="checkbox"  />
-	  	    	</label>
-	  	    	<label>Black
-	  	    		<input formControlName="black" type="checkbox"  />
-	  	    	</label>
-	  	    	<label>Green
-	  	    		<input formControlName="green" type="checkbox"  />
-	  	    	</label>
-	  	   </div>
   	    	<label>Wins
-  	    		<input formControlName="wins" type="number" />
+  	    		<input formControlName="wins" type="number" class="text_input" />
   	    	</label>
   	    	<label>Losses
-  	    		<input formControlName="losses" type="number" />
+  	    		<input formControlName="losses" type="number" class="text_input" />
   	    	</label>
   	    	<label>Draws
-  	    		<input formControlName="draws" type="number" />
+  	    		<input formControlName="draws" type="number" class="text_input" />
   	    	</label>
   	    	<label>Byes
-  	    		<input formControlName="byes" type="number" />
+  	    		<input formControlName="byes" type="number" class="text_input" />
   	    	</label>
   	    	<label>Score
-  	    		<input formControlName="score" type="number" />
+  	    		<input formControlName="score" type="number" class="text_input" />
   	    	</label>
   	    </div>
     </div>
+    <hr />
    
 
     `

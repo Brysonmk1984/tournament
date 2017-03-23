@@ -14,15 +14,15 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 		<div class="page_wrapper">
 			<div>	
 				<h2>Player Details: </h2>
-				<select id="playerSelect" class="input-lg vertical_align_top pull-right" [(ngModel)]="selectedPlayer" name="player" (change)="pc()">
+				<select id="playerSelect" class="input-lg vertical_align_top pull-right" [(ngModel)]="selectedPlayer" name="player" (change)="pc(selectedPlayer.firstName, selectedPlayer.lastName)">
 					<option *ngFor="let player of playerList" [ngValue]="player">{{player.firstName}} {{player.lastName}}</option>
 				</select>
 			</div>
-			<span class="subheader">Cululative Player Data Since: {{selectedPlayer.trackingSince}}</span>
+			<span class="subheader">Cululative Player Data Since: {{selectedPlayer.trackingSince | date}}</span>
 			<hr />
 			<div id="playerContainer">
 				<div class="page_title_container well">
-					<div id="detailsPhoto" class="details_group inline_block"><img [ngClass]="{ranked_first : selectedPlayer.overallRanking === 1}" class="profile_image img-thumbnail" src="{{selectedPlayer.photoUrl}}" /></div>
+					<div id="detailsPhoto" class="details_group inline_block"><img [ngClass]="{has_belt : player?.wonLastTournament === true}" class="profile_image img-thumbnail" src="{{selectedPlayer.photoUrl}}" /></div>
 					
 					<div class="details_group inline_block">
 						<ul  id="detailsList1" class="details_list list-group inline_block">
@@ -37,7 +37,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 							<li class="list-group-item"><strong>Wins: </strong><span>{{selectedPlayer.matchWins}}</span></li>
 							<li class="list-group-item"><strong>Losses : </strong><span>{{selectedPlayer.matchLosses}}</span></li>
 							<li class="list-group-item"><strong>Draws : </strong><span>{{selectedPlayer.matchDraws}}</span></li>
-							<li class="list-group-item"><strong>Tracking Since</strong> <span>{{selectedPlayer.trackingSince}}</span></li>
+							<li class="list-group-item"><strong>Tracking Since: </strong> <span>{{selectedPlayer.trackingSince | date}}</span></li>
 						</ul>
 					</div>
 
@@ -134,30 +134,34 @@ export class PlayerHistoryComponent implements OnInit{
 
 
    ngOnInit(){
-   	this.route.params.subscribe((params : {playerid}) => {
-   	 	let id;
-   	 	console.log(params.playerid );
-   		if(typeof params.playerid === "string"){
-   			id = parseInt(params.playerid);
-   		}else{
-   			id = 0;
-   			this.location.replaceState("/player/"+id);
+   	this.route.params.subscribe((params : {playerName}) => {
+   	 	let firstName;
+   	 	let lastName;
+   	 
+   		if(typeof params.playerName === "string"){
+   			let dashIndex = params.playerName.indexOf('-');
+   			firstName = dashIndex !== -1 ? params.playerName.slice(0,dashIndex) : params.playerName;
+   			lastName = dashIndex !== -1 ? params.playerName.slice(dashIndex + 1, params.playerName.length) : undefined;
+   			console.log(firstName,lastName);
    		}
-
    		this.allPlayers.subscribe(players => {
-   	  			console.log('players',players);
+  
    	  			this.playerList = players;
    	  			this.selectedPlayer = this.playerList.find( (player) =>{
-   	  				return player.id === id;
+   	  				if(lastName){
+   	  					return player.lastName.toLowerCase() === lastName;
+   	  				}else if(firstName){
+   	  					return player.firstName.toLowerCase() === firstName;
+   	  				}else{
+   	  					return player.id === 0;
+   	  				}
    	  			});
    	  			console.log('selectedPlayer',this.selectedPlayer);
    	  	});
    	});
 	}
 
-	pc(){
-		let id = this.selectedPlayer['id'];
-
-		this.location.replaceState("/player/"+id);
+	pc(firstName, lastName){
+		this.location.replaceState("/player/"+firstName.toLowerCase() + "-" + lastName.toLowerCase());
 	}
 }

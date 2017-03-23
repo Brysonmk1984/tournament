@@ -3,11 +3,11 @@ import { Component } from "@angular/core";
 @Component({
 	template : `
 		<header>
-		<h1>TOURNAMENT TRACKER</h1>
+		<h1>MTG TOURNAMENT TRACKER</h1>
 		<nav>
 		  <a routerLink="/standings">Standings</a>
-		  <a routerLink="/add">New Tournament</a>
-		  <a routerLink="/player">Player History</a>
+		  <a routerLink="/add">Tournament</a>
+		  <a routerLink="/player">Players</a>
 		</nav>
 		</header>
 	`,
@@ -49,31 +49,42 @@ import { Component } from "@angular/core";
 	    		
 	    }
 	    @media (max-width:805px){
-	    	header{
-	    		height:130px;
-	    	}
-	    	header h1{
-	    		display:block;
-	    		text-align:center;
-	    		margin-bottom:0px;
-	    	}
-	    	header nav{
-	    		display:block;
-	    		text-align:center;
-	    		border-top:solid 1px white;
-	    		float:none;
-	    	}
-	    	header a{
-	   
-	    		width:32%;
-	    		display:inline-block;
-	    		
-	    		
-	    	}
-	    	header a:first-child{
-	    		border-left: none;
-	    	}
+		    	header{
+		    		height:130px;
+		    	}
+		    	header h1{
+		    		display:block;
+		    		text-align:center;
+		    		margin-bottom:0px;
+		    	}
+		    	header nav{
+		    		display:block;
+		    		text-align:center;
+		    		border-top:solid 1px white;
+		    		float:none;
+		    	}
+		    	header a{
+		   
+		    		width:32%;
+		    		display:inline-block;
+		    		
+		    		
+		    	}
+		    	header a:first-child{
+		    		border-left: none;
+		    	}
 	    }
+	   @media (max-width:465px){
+   		header a{
+   			width:100%;
+   			display:block;
+   			border-bottom: solid 1px white;
+   		}
+   		header{
+   		   height:auto;
+   		   
+   		}
+	   }
 	`]
 })
 

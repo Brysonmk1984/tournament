@@ -20,7 +20,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 				<table class="table table-list table-striped">
 					<tr>
-						<th colspan="2">Player</th>
+						<th colspan="3">Player</th>
 						<th class="text-right">Overall Rank</th>
 						<th class="text-right">Power Rank</th>
 						<th class="text-right">1st Place FInishes</th>
@@ -31,8 +31,9 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 						
 					</tr>
 					<tr *ngFor="let player of playerList">
-						<td (click)="playerSelected(player.id)" class=""><img [ngClass]="{ranked_first : player.overallRanking === 1}" class="profile_image img-thumbnail" src="{{player.photoUrl}}" /></td>
-						<td (click)="playerSelected(player.id)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
+						<td (click)="playerSelected(player.firstName, player.lastName)" class=""><img [ngClass]="{ranked_first : player.wonLastTournament === true}" class="profile_image img-thumbnail" src="{{player.photoUrl}}" /></td>
+						<td (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
+						<td><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span></td>
 						<td class="text-right">{{player.overallRanking}}</td>
 						<td class="text-right">{{player.powerRanking}}</td>
 						<td class="text-right">{{player.firstPlaces}}</td>
@@ -68,6 +69,18 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 		.table>tbody>tr>td em{
 			font-weight:normal;
 		}
+		.belt_row{
+			display:none;
+		}
+		.belt_row.has_belt{
+			width:100px;
+			display: inline-block;
+			text-align: center;
+		}
+		.belt_row.has_belt img{
+			width: 100px;
+
+		}
 		
 	`]
 })
@@ -96,8 +109,12 @@ export class StandingsComponent{
 		  			  
 		  	});
 	}
-
-	playerSelected(id){
-		this.parentRouter.navigateByUrl('/player/' + id);
+	playerSelected(firstName : string, lastName? : string){
+		if(lastName){
+			this.parentRouter.navigateByUrl('/player/' + firstName.toLowerCase() + "-" + lastName.toLowerCase());
+		}else{
+			this.parentRouter.navigateByUrl('/player/' + firstName.toLowerCase());
+		}
+		
 	}
 }
