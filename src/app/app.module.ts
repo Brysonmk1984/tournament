@@ -11,6 +11,7 @@ import { AngularFireModule } from 'angularfire2';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
+import { SidebarComponent } from './sidebar.component';
 import { InputDataComponent } from './inputData.component';
 import { PlayerSubComponent } from "./playerSubComponent.component";
 import { PlayerHistoryComponent } from './playerHistory.component';
@@ -41,6 +42,7 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     HeaderComponent,
+    SidebarComponent,
     InputDataComponent,
     PlayerSubComponent,
     PlayerHistoryComponent,

@@ -79,6 +79,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 	styles : [`
 		#playerSelect{
 			cursor : pointer;
+			margin-right:20px;
 		}
 
 		.details_group{

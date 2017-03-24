@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 @Component({
 	template : `
 		<footer>
-			<p>See Official Rules here: <a href="./rules" >Rules</a></p>
+			<p>See official rules here: <a href="./rules" >Rules</a></p>
 		    <p>App by <a href="http://www.brysonkruk.com">Bryson Kruk</a></p>
 		    <p>&copy; 2017 Bryson Kruk Design & Development</p>
 		</footer>

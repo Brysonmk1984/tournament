@@ -6,6 +6,7 @@ import { PlayerHistoryComponent } from './playerHistory.component';
 import { StandingsComponent } from './standings.component';
 import { FooterComponent } from './footer.component';
 
+
 //import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 @Component({

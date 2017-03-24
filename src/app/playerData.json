@@ -1,24 +1,46 @@
-{"players" : [
-	{
-		"id" : 1,
-		"firstName" : "Ryan",
-		"lastName" : "Dunn",
-		"nickName" : "Baby Mama Daddy",
-		"overallRanking" : 9,
-		"powerRanking" : 9,
-		"firstPlaces" : 0,
-		"overallScore" : 28,
-		"matchWins" : 100,
-		"matchLosses" : 50,
-		"matchDraws" : 5,
-		"photoUrl" : "http://brysonkruk.com/tournament/images/ryan1.jpg",
-		"wonLastTournament" : false,
-		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":2, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":6, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":5, "rank":3, "id":3}]
+{
+	"tournaments" : [{
+		"playerFormsArray" : {
+			"somePlayerData" : ""
 		},
+		"tournamentDetails" : {
+			"date" : "12-12-2015",
+			"set" : "KLD",
+			"id" : 0
+		}
+	},
+	{
+		"playerFormsArray" : {
+			"somePlayerData" : ""
+		},
+		"tournamentDetails" : {
+			"date" : "12-20-2015",
+			"set" : "AVR",
+			"id" : 1
+		}
+	},
+	{
+		"playerFormsArray" : {
+			"somePlayerData" : ""
+		},
+		"tournamentDetails" : {
+			"date" : "10-30-2016",
+			"set" : "KLD",
+			"id" : 2
+		}
+	},
+	{
+		"playerFormsArray" : {
+			"somePlayerData" : ""
+		},
+		"tournamentDetails" : {
+			"date" : "8-12-2016",
+			"set" : "SOI",
+			"id" : 4
+		}
+	}
+	],
+	"players" : [
 	{
 		"id" : 0,
 		"firstName" : "Bryson",
@@ -26,18 +48,44 @@
 		"nickName" : "Captain Bryso",
 		"overallRanking" : 1,
 		"powerRanking" : 2,
-		"firstPlaces" : 3,
-		"overallScore" : 24,
-		"matchWins" : 100,
-		"matchLosses" : 50,
-		"matchDraws" : 5,
+		"firstPlaces" : 2,
+		"overallScore" : 36,
+		"powerScore" : 30,
+		"matchWins" : 18,
+		"matchLosses" : 0,
+		"matchDraws" : 0,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/bryson5.jpg",
 		"wonLastTournament" : false,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":2, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":3, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":1, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":2, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
+		},
+	{
+		"id" : 1,
+		"firstName" : "Ryan",
+		"lastName" : "Dunn",
+		"nickName" : "Baby Mama Daddy",
+		"overallRanking" : 9,
+		"powerRanking" : 9,
+		"powerScore" : 18,
+		"firstPlaces" : 0,
+		"overallScore" : 4,
+		"matchWins" : 2,
+		"matchLosses" : 16,
+		"matchDraws" : 0,
+		"photoUrl" : "http://brysonkruk.com/tournament/images/ryan1.jpg",
+		"wonLastTournament" : false,
+		"trackingSince" : "",
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		},
 	{
 		"id" : 2,
@@ -46,18 +94,21 @@
 		"nickName" : "Tea for the Tillson Man",
 		"overallRanking" : 2,
 		"powerRanking" : 1,
-		"firstPlaces" : 0,
-		"overallScore" : 21,
-		"matchWins" : 100,
-		"matchLosses" : 50,
-		"matchDraws" : 5,
+		"firstPlaces" : 1,
+		"overallScore" : 30,
+		"powerScore" : 18,
+		"matchWins" : 14,
+		"matchLosses" : 2,
+		"matchDraws" : 2,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/matt1.jpg",
 		"wonLastTournament" : true,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":0, "byes":1,"score":2, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":5, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		},
 	{
 		"id" : 3,
@@ -65,19 +116,22 @@
 		"lastName" : "Mathre",
 		"nickName" : "Clay Monster",
 		"overallRanking" : 8,
-		"powerRanking" : 3,
+		"powerRanking" : 9,
 		"firstPlaces" : 0,
-		"overallScore" : 19,
-		"matchWins" : 100,
-		"matchLosses" : 50,
-		"matchDraws" : 5,
+		"overallScore" : 26,
+		"powerScore" : 16,
+		"matchWins" : 12,
+		"matchLosses" : 4,
+		"matchDraws" : 2,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/clay2.jpg",
 		"wonLastTournament" : false,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		},
 	{
 		"id" : 4,
@@ -85,19 +139,22 @@
 		"lastName" : "Restad",
 		"nickName" : "Cobot",
 		"overallRanking" : 4,
-		"powerRanking" : 4,
+		"powerRanking" : 3,
 		"firstPlaces" : 0,
-		"overallScore" : 16,
-		"matchWins" : 100,
-		"matchLosses" : 50,
-		"matchDraws" : 5,
+		"overallScore" : 25,
+		"powerScore" : 12,
+		"matchWins" : 11,
+		"matchLosses" : 4,
+		"matchDraws" : 3,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/blank.jpg",
 		"wonLastTournament" : false,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":3, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":5, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":1, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":0, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		},
 	{
 		"id" : 5,
@@ -105,19 +162,22 @@
 		"lastName" : "Shearer",
 		"nickName" : "Gatty",
 		"overallRanking" : 5,
-		"powerRanking" : 5,
+		"powerRanking" : 4,
 		"firstPlaces" : 0,
-		"overallScore" : 14,
-		"matchWins" : 100,
-		"matchLosses" : 50,
-		"matchDraws" : 5,
+		"overallScore" : 18,
+		"powerScore" : 2,
+		"matchWins" : 9,
+		"matchLosses" : 5,
+		"matchDraws" : 4,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/gareth1.jpg",
 		"wonLastTournament" : false,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":3, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":3, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":3, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		},
 	{
 		"id" : 6,
@@ -125,19 +185,22 @@
 		"lastName" : "Kosche",
 		"nickName" : "Not Koshe",
 		"overallRanking" : 6,
-		"powerRanking" : 6,
+		"powerRanking" : 7,
 		"firstPlaces" : 0,
-		"overallScore" : 10,
-		"matchWins" : 100,
-		"matchLosses" : 50,
+		"overallScore" : 18,
+		"powerScore" : 10,
+		"matchWins" : 7,
+		"matchLosses" : 6,
 		"matchDraws" : 5,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/blank.jpg",
 		"wonLastTournament" : false,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":2, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":4, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":2, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":2, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		},
 	{
 		"id" : 7,
@@ -145,37 +208,43 @@
 		"lastName" : "",
 		"nickName" : "For a Penny",
 		"overallRanking" : 7,
-		"powerRanking" : 7,
+		"powerRanking" : 6,
 		"firstPlaces" : 0,
-		"overallScore" : 8,
-		"matchWins" : 100,
-		"matchLosses" : 50,
-		"matchDraws" : 5,
+		"overallScore" : 14,
+		"powerScore" : 6,
+		"matchWins" : 5,
+		"matchLosses" : 9,
+		"matchDraws" : 4,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/blank.jpg",
 		"wonLastTournament" : false,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":4, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":5, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":1, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		},
 		{
 		"id" : 8,
 		"firstName" : "Reed",
 		"lastName" : "Biggs",
-		"nickName" : "Riggs from Lethal Weapon",
+		"nickName" : "Aquagnome",
 		"overallRanking" : 3,
-		"powerRanking" : 8,
-		"firstPlaces" : 2,
-		"overallScore" : 21,
-		"matchWins" : 120,
-		"matchLosses" : 70,
-		"matchDraws" : 6,
+		"powerRanking" : 4,
+		"firstPlaces" : 0,
+		"overallScore" : 9,
+		"powerScore" : 8,
+		"matchWins" :  3,
+		"matchLosses" : 12,
+		"matchDraws" : 3,
 		"photoUrl" : "http://brysonkruk.com/tournament/images/reed2.jpg",
 		"wonLastTournament" : false,
 		"trackingSince" : "",
-		"tournamentHistory" : [{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
-			{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":4, "rank":1, "id":1},
-			{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":5, "rank":4, "id":2},
-			{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":1, "rank":3, "id":3}]
+		"tournamentHistory" : {
+				"0" :{"date": "12-12-2015", "colors" : ["red","green"], "wins" : 4, "losses" : 2, "draws": 0, "set" : "KLD","place":3, "byes":1,"score":1, "rank":1, "id":0},
+				"1" :{"date": "12-20-2015", "colors" : ["red","black"], "wins" : 5, "losses" : 1, "draws": 0, "set" : "AVR","place":3, "byes":1,"score":2, "rank":1, "id":1},
+				"2" :{"date": "10-30-2016", "colors" : ["red","blue"], "wins" : 3, "losses" : 3, "draws": 0, "set" : "TKT","place":3, "byes":1,"score":4, "rank":4, "id":2},
+				"3" :{"date": "8-12-2016", "colors" : ["white","blue"], "wins" : 1, "losses" : 3, "draws": 2, "set" : "SOI","place":3, "byes":1,"score":3, "rank":3, "id":3}
+			}
 		}]}

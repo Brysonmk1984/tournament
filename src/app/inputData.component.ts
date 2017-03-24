@@ -28,7 +28,7 @@ import { CalculateRanking } from "./calculateRanking.service";
 					<h3>Tournament Details: </h3>
 						<div id="tournamentDetails" class="inline_block">
 							<label class="inline_block">Date
-								<input formControlName="date" type="date" class="text_input" />
+								<input formControlName="date" type="date" class="text_input" placeholder="mm/dd/yy" />
 							</label>
 							<label class="inline_block">Draft Set
 								<input formControlName="set" type="text" class="text_input" />
@@ -111,11 +111,12 @@ export class InputDataComponent implements OnInit{
 
 	onSubmit({ value  , valid } ){
 		let promptResult = prompt('Password Pls');
+		//let promptResult = 'graphic5';
 		if(promptResult !== "graphic5"){return;}
 
 		console.log('submitted form data', value["tournamentDetails"]);
 
-			console.log('tl',this.tournamentList);
+			
 			if(this.tournamentList.length > 0){
 				value.tournamentDetails.id = this.calcTournamentId(this.tournamentList);
 			}else{
@@ -125,12 +126,33 @@ export class InputDataComponent implements OnInit{
 		//push tournament data
 		this.root.ref('tournaments/').child(parseInt(value.tournamentDetails.id)).set(value);
 
+		let participantsArray : number[] = [];
+		let nonParticipantsArray : number[] = [];
 		// Loop through each submitted player from the form
 		value.playerFormsArray.forEach((player) =>{
-			this.dbUpdatePlayer(player, value["tournamentDetails"]);
+	
+			participantsArray.push(parseInt(player.player));
+			this.dbUpdatePlayer(player, value["tournamentDetails"])
 		});
-			
-		this.calculateRanking.calculateRanking();
+
+		// fix this later
+		setTimeout(()=>{
+			// Need to update non participants to set that they don't have the belt	
+			this.playerList.forEach((player) =>{console.log('player',player);
+				let check = participantsArray.find((item)=>{
+					return player.id === item;
+				});
+				if(check === undefined){nonParticipantsArray.push(player.id);}
+			});
+
+			nonParticipantsArray.forEach((id) =>{
+				this.dbUpdateNonParticipant(id);
+			});
+
+		
+			this.calculateRanking.calculateRanking();
+		},2000);
+		
 
 	}
 	resetForm(form){
@@ -201,73 +223,78 @@ export class InputDataComponent implements OnInit{
 				playerTournamentData.colors.push(color);
 			}
 		}
-
-		//test
-		/*this.root.ref('players/').orderByChild('id').equalTo(formPlayerData.id).once('value',test=>{
-			console.log(test.val());
-		});*/
-
-
-
-
-
-		/*let calcId = function(playerList){
-			let newArray = [];
-			playerList.forEach(item =>{
-				newArray.push(item.id);
-			});
-			return (Math.max(...newArray) + 1);
-		};*/
-
-		
+		// existing player 
+		if(formPlayerData.player !== "newPlayer"){console.log('existing player - ', parseInt(formPlayerData.player));
 			
-			// existing player 
-			if(formPlayerData.player !== "newPlayer"){console.log('existing player - ', parseInt(formPlayerData.player));
-				playerRef.orderByChild('id').equalTo(parseInt(formPlayerData.player)).once('value',(snap)=>{
-					console.log('snap',snap.val());
-					snap = snap.val()[parseInt(formPlayerData.player)]
-					playerData = {
-						'matchWins' : snap.matchWins + formPlayerData.wins,
-						'matchLosses' : snap.matchLosses + formPlayerData.losses,
-						'matchDraws' : snap.matchDraws + formPlayerData.draws,
-						'firstPlaces' : formPlayerData.rank === 1 ? snap.firstPlaces + 1 : snap.firstPlaces,
-						'trackingSince' : snap.trackingSince ? snap.trackingSince : formTournamentData.date
-					};
-					
-					playerRef.child(parseInt(formPlayerData.player)).update(playerData);
-					playerRef.child(parseInt(formPlayerData.player)).child('tournamentHistory').child(playerTournamentData.id).set(playerTournamentData);
-				});
+
+			playerRef.orderByChild('id').equalTo(parseInt(formPlayerData.player)).once('value',(snap)=>{
+				snap = snap.val()[parseInt(formPlayerData.player)];
 				
-			// new player 
-			}else{console.log('new player');
 				playerData = {
-					'matchWins' : formPlayerData.wins,
-					'matchLosses' : formPlayerData.losses,
-					'matchDraws' : formPlayerData.draws,
-					'firstPlaces' : formPlayerData.rank === 1 ? 1 : 0,
-					'trackingSince' : formTournamentData.date,
-					'photoUrl' : 'http://brysonkruk.com/tournament/images/blank.jpg',
-					'score' : 0,
-					'overallRanking' : 0,
-					'powerRanking' : 0,
-					'firstName' : formPlayerData.playerNameInfo.firstName,
-					'lastName' : formPlayerData.playerNameInfo.lastName,
-					'nickName' : formPlayerData.playerNameInfo.nickName,
-					'id' : this.calcId(this.playerList) || 0
+					'matchWins' : snap.matchWins + formPlayerData.wins,
+					'matchLosses' : snap.matchLosses + formPlayerData.losses,
+					'matchDraws' : snap.matchDraws + formPlayerData.draws,
+					'firstPlaces' : formPlayerData.rank === 1 ? snap.firstPlaces + 1 : snap.firstPlaces,
+					'wonLastTournament' : formPlayerData.rank === 1 ? true : false,
+					'trackingSince' : snap.trackingSince ? snap.trackingSince : formTournamentData.date
 				};
 				
-				playerRef.child(parseInt(playerData.id)).set(playerData);
-				this.root.ref('players/' + playerData.id).child("tournamentHistory").push(playerTournamentData);
-			}
+				playerRef.child(parseInt(formPlayerData.player)).update(playerData);
+
+				playerRef.once('value',(snap2)=>{console.log('IN');
+					playerRef.child(parseInt(formPlayerData.player)).child('tournamentHistory').child(playerTournamentData.id).set(playerTournamentData);
+					
+				});
+
+				
+			});
+			
+		// new player 
+		}else{console.log('new player',formPlayerData);
+			playerData = {
+				'matchWins' : formPlayerData.wins,
+				'matchLosses' : formPlayerData.losses,
+				'matchDraws' : formPlayerData.draws,
+				'firstPlaces' : formPlayerData.rank === 1 ? 1 : 0,
+				'wonLastTournament' : formPlayerData.rank === 1 ? true : false,
+				'trackingSince' : formTournamentData.date,
+				'photoUrl' : 'http://brysonkruk.com/tournament/images/blank.jpg',
+				'score' : "",
+				'overallRanking' : "",
+				'powerRanking' : "",
+				'powerScore' : "",
+				'firstName' : formPlayerData.playerNameInfo.firstName,
+				'lastName' : formPlayerData.playerNameInfo.lastName,
+				'nickName' : formPlayerData.playerNameInfo.nickName,
+				'tournamentHistory' : [playerTournamentData],
+				'id' : this.calcId(this.playerList) || 0
+			};
+
+			// Update player info
+			playerRef.child(parseInt(playerData.id)).set(playerData);
+
+			// Add to player tournament history data
+			/*playerRef.once('value',(snap2)=>{
+				playerRef.child(parseInt(playerData.id)).child('tournamentHistory').child(playerTournamentData.id).set(playerTournamentData);
+			});*/
+
+
+		}
 
 		
 	}
+
+	dbUpdateNonParticipant(id){
+		this.root.ref('players/' + id).child('wonLastTournament').set(false);
+	}
+
+
 	private calcId(list){
 		let newArray = [];
 			list.forEach(item =>{
 				newArray.push(item.id);
 			});
-			console.log((Math.max(...newArray) + 1));
+			//console.log((Math.max(...newArray) + 1));
 			return (Math.max(...newArray) + 1);
 	}
 

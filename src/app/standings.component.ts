@@ -20,24 +20,34 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 				<table class="table table-list table-striped">
 					<tr>
-						<th colspan="3">Player</th>
+						<th colspan="2">Player</th>
+						<th class="small_screen_hide"></th>
 						<th class="text-right">Overall Rank</th>
 						<th class="text-right">Power Rank</th>
-						<th class="text-right">1st Place FInishes</th>
-						<th class="text-right">Overall Score</th>
+						
+						<th class="text-right small_screen_hide">1st Place FInishes</th>
+						<th class="text-right small_screen_hide">Overall Score</th>
+						<th class="text-right hide">Power Score</th>
 						<th class="text-right">Match Wins</th>
 						<th class="text-right">Match Losses</th>
 						<th class="text-right">Match Draws</th>
 						
 					</tr>
 					<tr *ngFor="let player of playerList">
-						<td (click)="playerSelected(player.firstName, player.lastName)" class=""><img [ngClass]="{ranked_first : player.wonLastTournament === true}" class="profile_image img-thumbnail" src="{{player.photoUrl}}" /></td>
+						<td (click)="playerSelected(player.firstName, player.lastName)" class="">
+							<img [ngClass]="{ranked_first : player.wonLastTournament === true}" class="profile_image img-thumbnail" src="{{player.photoUrl}}" />
+							<div class="large_screen_hide">
+								<span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span>
+							</div>
+						</td>
 						<td (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
-						<td><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span></td>
+						<td class="small_screen_hide"><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span></td>
 						<td class="text-right">{{player.overallRanking}}</td>
 						<td class="text-right">{{player.powerRanking}}</td>
-						<td class="text-right">{{player.firstPlaces}}</td>
-						<td class="text-right">{{player.overallScore}}</td>
+						
+						<td class="text-right small_screen_hide">{{player.firstPlaces}}</td>
+						<td class="text-right small_screen_hide">{{player.overallScore}}</td>
+						<td class="text-right hide">{{player.powerScore}}</td>
 						<td class="text-right">{{player.matchWins}}</td>
 						<td class="text-right">{{player.matchLosses}}</td>
 						<td class="text-right">{{player.matchDraws}}</td>
@@ -81,6 +91,28 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 			width: 100px;
 
 		}
+		.large_screen_hide{
+			display:none;
+		}
+		@media(max-width:805px){
+			.small_screen_hide{
+				display:none;
+			}
+			.large_screen_hide{
+				display:block;
+			}
+			.has_belt{
+				text-align:left;
+			}
+			.belt_row.has_belt{
+				width:70px;
+			}
+			.has_belt img{
+				display:inline-block;
+				width:70px !important;
+			}
+		}
+		
 		
 	`]
 })

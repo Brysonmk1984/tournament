@@ -4,11 +4,11 @@ import { Component } from "@angular/core";
 	template : `
 		<header>
 		<h1>MTG TOURNAMENT TRACKER</h1>
-		<nav>
+		<!--<nav>
 		  <a routerLink="/standings">Standings</a>
 		  <a routerLink="/add">Tournament</a>
 		  <a routerLink="/player">Players</a>
-		</nav>
+		</nav>-->
 		</header>
 	`,
 	selector : "header-component",
@@ -49,7 +49,11 @@ import { Component } from "@angular/core";
 	    		
 	    }
 	    @media (max-width:805px){
-		    	header{
+		    	header h1{
+		    		text-align:center;
+		    		margin-left:-18px;
+		    	}
+		    	/*header{
 		    		height:130px;
 		    	}
 		    	header h1{
@@ -72,14 +76,14 @@ import { Component } from "@angular/core";
 		    	}
 		    	header a:first-child{
 		    		border-left: none;
-		    	}
+		    	}*/
 	    }
-	   @media (max-width:465px){
-   		header a{
+	  @media (max-width:550px){
+   		 /*header a{
    			width:100%;
    			display:block;
    			border-bottom: solid 1px white;
-   		}
+   		}*/
    		header{
    		   height:auto;
    		   
