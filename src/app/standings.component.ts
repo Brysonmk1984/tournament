@@ -26,8 +26,6 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 						<th class="text-right">Power Rank</th>
 						
 						<th class="text-right small_screen_hide">1st Place FInishes</th>
-						<th class="text-right small_screen_hide">Overall Score</th>
-						<th class="text-right hide">Power Score</th>
 						<th class="text-right">Match Wins</th>
 						<th class="text-right">Match Losses</th>
 						<th class="text-right">Match Draws</th>
@@ -42,12 +40,10 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 						</td>
 						<td (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
 						<td class="small_screen_hide"><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span></td>
-						<td class="text-right">{{player.overallRanking}}</td>
-						<td class="text-right">{{player.powerRanking}}</td>
+						<td class="text-right"><span class="large_text">{{player.overallRanking}}</span> <em class="text-muted small">({{player.overallScore}})</em></td>
+						<td class="text-right"><span class="large_text">{{player.powerRanking}}</span> <em class="text-muted small">({{player.powerScore}})</em></td>
 						
 						<td class="text-right small_screen_hide">{{player.firstPlaces}}</td>
-						<td class="text-right small_screen_hide">{{player.overallScore}}</td>
-						<td class="text-right hide">{{player.powerScore}}</td>
 						<td class="text-right">{{player.matchWins}}</td>
 						<td class="text-right">{{player.matchLosses}}</td>
 						<td class="text-right">{{player.matchDraws}}</td>
@@ -94,6 +90,9 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 		.large_screen_hide{
 			display:none;
 		}
+		.large_text{
+			font-size:1.2em;
+		}
 		@media(max-width:805px){
 			.small_screen_hide{
 				display:none;
@@ -130,8 +129,8 @@ export class StandingsComponent{
 			function compare(a,b){
 				if (a.overallRanking < b.overallRanking)
 				    return -1;
-				  if (a.overallRanking > b.overallRanking)
-				    return 1;
+				if (a.overallRanking > b.overallRanking)
+				   return 1;
 				return 0;
 			}
 

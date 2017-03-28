@@ -22,23 +22,23 @@ import { Component } from '@angular/core';
 									<li>Overall score is the total of scores across all tournaments the player participated in</li>
 								</ul>
 							</li>
-							<li>Power Ranking is the result of an algorithym, mainly judging the last few tournaments you played.</li>
+							<li>Power Ranking is the result of an algorithym, mainly judging performance in the last few tournaments</li>
 								<ol>
-									<li>If you've only played one tournament:
+									<li>If you've only played the last tournament and that was your only tournament:
 										<ol>
 											<li>That tournament is worth 100% of your power score (ranking)</li>
 										</ol>
 									</li>
-									<li>If you've played two tournaments:
+									<li>If you've played in the last two tournaments:
 										<ol>
-											<li>The latest tournament is worth 80% of your power score (ranking)</li>
-											<li>The second tournament is worth 20% of your power score (ranking)</li>
+											<li>The latest tournament is worth 70% of your power score (ranking)</li>
+											<li>The second tournament is worth 30% of your power score (ranking)</li>
 										</ol>
 									</li>
-									<li>If you've played more than tournament:
+									<li>If you've played more than 2 tournament, including both the most recent two tournaments:
 										<ol>
-											<li>The latest tournament is worth 75% of your power score (ranking)</li>
-											<li>The second tournament is worth 15% of your power score (ranking)</li>
+											<li>The latest tournament is worth 70% of your power score (ranking)</li>
+											<li>The second tournament is worth 20% of your power score (ranking)</li>
 											<li>The average of all pervious tournaments are worth 10% of your power score (ranking)</li>
 										</ol>
 									</li>
@@ -57,6 +57,10 @@ import { Component } from '@angular/core';
 					<li><strong>Integration With Challonge</strong></li>
 						<ul>
 							<li>All Tournament scores must come from Challonge, either through their API or through direct input</li>
+								<ul>
+									<li>If a player drops midway through the tournament, that player receives losses for the remaining tournament matches</li>
+									<li>If a player drops midway through the tournament, that player's future oponents receive wins for the remaining tournament matches</li>
+								</ul>
 							<li>The only non-score tournament data is:
 								<ul>
 									<li>Ther date of the tournament</li>

@@ -20,6 +20,28 @@ import { RulesComponent } from './rules.component';
 import { FooterComponent } from './footer.component';
 import { KeysPipe } from './keys.pipe';
 
+import { environment } from "../environments/environment";
+
+// Dev DB Config
+const devFirebaseConfig = {
+  apiKey: "AIzaSyD88Jjr86D_5z5TpiQ_6J5ENaz_iU30IMI",
+  authDomain: "dev-mtg-standings.firebaseapp.com",
+  databaseURL: "https://dev-mtg-standings.firebaseio.com/",
+  storageBucket: "dev-mtg-standings.appspot.com",
+  messagingSenderId: "637468525174"
+};
+
+// Production DB Config
+const prodFirebaseConfig = {
+  apiKey: "AIzaSyA4yBfeXOTJBhBJ81zsPhT1Doh_-2RPj18",
+  authDomain: "mtg-standings.firebaseapp.com",
+  databaseURL: "https://mtg-standings.firebaseio.com",
+  storageBucket: "mtg-standings.appspot.com",
+  messagingSenderId: "637468525174"
+};
+
+export const firebaseConfig = environment.production ? prodFirebaseConfig : devFirebaseConfig;
+
 export const ROUTES: Routes = [
 	{ path : "", component : StandingsComponent },
 	{ path : "standings", component : StandingsComponent },
@@ -28,15 +50,6 @@ export const ROUTES: Routes = [
 	{ path : "rules", component : RulesComponent },
 	{ path : "player/:playerName", component : PlayerHistoryComponent }
 ];
-
-// Must export the config
-export const firebaseConfig = {
-  apiKey: "AIzaSyA4yBfeXOTJBhBJ81zsPhT1Doh_-2RPj18",
-  authDomain: "mtg-standings.firebaseapp.com",
-  databaseURL: "https://mtg-standings.firebaseio.com",
-  storageBucket: "mtg-standings.appspot.com",
-  messagingSenderId: "637468525174"
-};
 
 @NgModule({
   declarations: [

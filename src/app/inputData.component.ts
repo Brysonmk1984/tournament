@@ -4,11 +4,10 @@ import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire, FirebaseListObservable, FirebaseRef} from 'angularfire2';
-
+import {AngularFire, FirebaseListObservable, FirebaseRef} from 'angularfire2';
+import { environment } from "../environments/environment";
 import { TournamentDetails } from "./TournamentDetails.interface";
-import { TournamentPlayerDetails } from "./TournamentPlayerDetails.interface";
-import { PlayerSubComponent } from "./playerSubComponent.component";
+//import { TournamentPlayerDetails } from "./TournamentPlayerDetails.interface";
 import { CalculateRanking } from "./calculateRanking.service";
 
 @Component({
@@ -25,7 +24,7 @@ import { CalculateRanking } from "./calculateRanking.service";
 		<div id="formContainer">
 			<form [formGroup]="tournament" (ngSubmit)="onSubmit(tournament)">
 				<div id="tournamentInputContainer" formGroupName="tournamentDetails">
-					<h3>Tournament Details: </h3>
+					<h3>Tournament Details: production</h3>
 						<div id="tournamentDetails" class="inline_block">
 							<label class="inline_block">Date
 								<input formControlName="date" type="date" class="text_input" placeholder="mm/dd/yy" />
@@ -53,6 +52,7 @@ import { CalculateRanking } from "./calculateRanking.service";
 					<div id="submitContainer" class="pull-right">
 						<input class="btn btn-default" type="button"  value="Add Player" (click)="addPlayer()" title="Add Player to This Tournament" />
 						<input class="btn btn-default" type="button"  value="Reset" (click)="resetForm(tournament)" />
+						<input class="btn btn-default" type="button"  value="Recalculate" (click)="updateRankings()" title="Recalculate" />
 						<input class="btn btn-primary" type="submit" value="Submit" [disabled]="tournament.invalid" title="All form fields are required"   />
 					</div>
 				</div>
@@ -82,7 +82,6 @@ export class InputDataComponent implements OnInit{
 	}
 
 	ngOnInit(){
-
 		//this.calculateRanking.calculateRanking();
 
 		this.tournament  = this.fb.group({
@@ -110,9 +109,13 @@ export class InputDataComponent implements OnInit{
 
 
 	onSubmit({ value  , valid } ){
-		let promptResult = prompt('Password Pls');
-		//let promptResult = 'graphic5';
-		if(promptResult !== "graphic5"){return;}
+		if(environment.production){
+			let result = prompt('Password Pls');
+				if(result !== "graphic5"){return;}
+		}
+
+		
+	
 
 		console.log('submitted form data', value["tournamentDetails"]);
 
@@ -305,6 +308,14 @@ export class InputDataComponent implements OnInit{
 			});
 			//console.log('asd',...newArray,(Math.max(...newArray) + 1));
 			return (Math.max(...newArray) + 1);
+	}
+
+	private updateRankings(){
+		if(environment.production){
+			let result = prompt('Password Pls');
+				if(result !== "graphic5"){return;}
+		}
+		this.calculateRanking.calculateRanking();
 	}
 
 

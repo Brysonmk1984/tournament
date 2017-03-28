@@ -18,7 +18,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 					<option *ngFor="let player of playerList" [ngValue]="player">{{player.firstName}} {{player.lastName}}</option>
 				</select>
 			</div>
-			<span class="subheader">Cululative Player Data Since: {{selectedPlayer.trackingSince | date}}</span>
+			<span class="subheader" *ngIf="selectedPlayer.trackingSince">Cumlulative Player Data Since: {{selectedPlayer.trackingSince | date}}</span>
 			<hr />
 			<div id="playerContainer">
 				<div class="page_title_container well">
@@ -37,7 +37,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 							<li class="list-group-item"><strong>Wins: </strong><span>{{selectedPlayer.matchWins}}</span></li>
 							<li class="list-group-item"><strong>Losses : </strong><span>{{selectedPlayer.matchLosses}}</span></li>
 							<li class="list-group-item"><strong>Draws : </strong><span>{{selectedPlayer.matchDraws}}</span></li>
-							<li class="list-group-item"><strong>Tracking Since: </strong> <span>{{selectedPlayer.trackingSince | date}}</span></li>
+							<li class="list-group-item"><strong>Tracking Since: </strong> <span>{{(selectedPlayer.trackingSince | date) || "No tournament History"}}</span></li>
 						</ul>
 					</div>
 
