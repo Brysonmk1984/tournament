@@ -5,7 +5,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
-
+import { AuthModule } from '../auth/auth.module';
+import { AuthService } from '../auth/auth.service';
 import { AlertModule } from 'ng2-bootstrap';
 import { AngularFireModule } from 'angularfire2';
 
@@ -17,6 +18,7 @@ import { PlayerSubComponent } from "./playerSubComponent.component";
 import { PlayerHistoryComponent } from './playerHistory.component';
 import { StandingsComponent } from './standings.component';
 import { RulesComponent } from './rules.component';
+import { SignInComponent } from '../auth/signIn.component';
 import { FooterComponent } from './footer.component';
 import { KeysPipe } from './keys.pipe';
 
@@ -47,8 +49,10 @@ export const ROUTES: Routes = [
 	{ path : "standings", component : StandingsComponent },
 	{ path : "add", component : InputDataComponent },
 	{ path : "player", component : PlayerHistoryComponent },
+  { path : "player/:playerName", component : PlayerHistoryComponent },
 	{ path : "rules", component : RulesComponent },
-	{ path : "player/:playerName", component : PlayerHistoryComponent }
+  { path : "sign-in", component : SignInComponent }
+	
 ];
 
 @NgModule({
@@ -61,6 +65,7 @@ export const ROUTES: Routes = [
     PlayerHistoryComponent,
     StandingsComponent,
     RulesComponent,
+    //SignInComponent,
     FooterComponent,
     KeysPipe
   ],
@@ -70,10 +75,11 @@ export const ROUTES: Routes = [
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
+    AuthModule,
     AlertModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,13 +9,15 @@ import { environment } from "../environments/environment";
 import { TournamentDetails } from "./TournamentDetails.interface";
 //import { TournamentPlayerDetails } from "./TournamentPlayerDetails.interface";
 import { CalculateRanking } from "./calculateRanking.service";
+import { AuthService } from '../auth/auth.service';
 
 @Component({
 	template : `
 	<div class="page_wrapper">
 		<div class="page_title_container">
 			<h2>New Tournament Results</h2>
-			<span class="subheader">Enter the latest results from Challonge - All fields required</span>
+			<span  *ngIf="admin.signedIn" class="subheader">All fields Required</span>
+			<span *ngIf="!admin.signedIn" class="subheader non_admin">Only admins may submit tournament data</span>
 			<br />
 			<hr />
 			<br />
@@ -49,11 +51,14 @@ import { CalculateRanking } from "./calculateRanking.service";
 					</div>
 				</div>
 				<div class="clearfix">
+					<div id="pleaseSignInContainer" *ngIf="!tournament.untouched && !admin.signedIn"   class="bg-danger">
+							<span>Please <a href="./sign-in" >sign in</a> to submit new tournament data.</span>
+					</div>
 					<div id="submitContainer" class="pull-right">
 						<input class="btn btn-default" type="button"  value="Add Player" (click)="addPlayer()" title="Add Player to This Tournament" />
 						<input class="btn btn-default" type="button"  value="Reset" (click)="resetForm(tournament)" />
 						<input class="btn btn-default" type="button"  value="Recalculate" (click)="updateRankings()" title="Recalculate" />
-						<input class="btn btn-primary" type="submit" value="Submit" [disabled]="tournament.invalid" title="All form fields are required"   />
+						<input class="btn btn-primary" type="submit" value="Submit" [disabled]="tournament.invalid || !admin.signedIn" title="All form fields are required"   />
 					</div>
 				</div>
 			</form>
@@ -62,7 +67,7 @@ import { CalculateRanking } from "./calculateRanking.service";
 	`,
 	selector : "input-data-component",
 	styleUrls : ['./inputData.component.sass'],
-	providers : [CalculateRanking]
+	providers : [CalculateRanking, AuthService]
 })
 
 export class InputDataComponent implements OnInit{
@@ -73,7 +78,11 @@ export class InputDataComponent implements OnInit{
 	playerList : any[] = [];
 	tournamentList : any[] = [];
 	root;
-	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRanking){
+	admin : {signedIn, email} = {
+        signedIn : false,
+        email : ""
+    };
+	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRanking, private authService : AuthService){
 		this.tournaments$ = af.database.list('/tournaments');
 		this.players$ = af.database.list('/players');
 		this.root = ref.database();
@@ -83,6 +92,19 @@ export class InputDataComponent implements OnInit{
 
 	ngOnInit(){
 		//this.calculateRanking.calculateRanking();
+		
+		this.authService.watch()
+        .subscribe(user =>{
+            console.log('USER',user);
+           if(user){
+             this.admin.email = user.auth.email;
+             this.admin.signedIn = true;
+           }else{
+               this.admin.email = "";
+               this.admin.signedIn = false;
+           }
+        });
+
 
 		this.tournament  = this.fb.group({
 			tournamentDetails : this.fb.group({
@@ -109,10 +131,11 @@ export class InputDataComponent implements OnInit{
 
 
 	onSubmit({ value  , valid } ){
-		if(environment.production){
+		// No longer needed since Firebase Auth is working
+		/*if(environment.production){
 			let result = prompt('Password Pls');
 				if(result !== "graphic5"){return;}
-		}
+		}*/
 
 		
 	
