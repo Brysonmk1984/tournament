@@ -19,9 +19,11 @@ import { PlayerHistoryComponent } from './playerHistory.component';
 import { StandingsComponent } from './standings.component';
 import { RulesComponent } from './rules.component';
 import { SignInComponent } from '../auth/signIn.component';
+import { ChatComponent } from './chat.component';
+import { ChatMessageSubComponent } from './chatMessageSubComponent.component';
 import { FooterComponent } from './footer.component';
 import { KeysPipe } from './keys.pipe';
-
+import { ChatService } from './chat.service';
 import { environment } from "../environments/environment";
 
 // Dev DB Config
@@ -51,7 +53,8 @@ export const ROUTES: Routes = [
 	{ path : "player", component : PlayerHistoryComponent },
   { path : "player/:playerName", component : PlayerHistoryComponent },
 	{ path : "rules", component : RulesComponent },
-  { path : "sign-in", component : SignInComponent }
+  { path : "sign-in", component : SignInComponent },
+  { path : "chat", component : ChatComponent }
 	
 ];
 
@@ -66,6 +69,8 @@ export const ROUTES: Routes = [
     StandingsComponent,
     RulesComponent,
     //SignInComponent,
+    ChatComponent,
+    ChatMessageSubComponent,
     FooterComponent,
     KeysPipe
   ],
@@ -79,7 +84,7 @@ export const ROUTES: Routes = [
     AlertModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [AuthService],
+  providers: [AuthService, ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
