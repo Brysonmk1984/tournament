@@ -37,7 +37,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
         }
         #loadingMessagesContainer{
             text-align:center;
-            margin-top:35%;
+            margin-top:30%;
         }
         .message_sub_wrapper{
             margin-bottom:20px;

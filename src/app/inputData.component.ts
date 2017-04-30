@@ -96,7 +96,7 @@ export class InputDataComponent implements OnInit{
 		this.authService.watch()
         .subscribe(user =>{
             console.log('USER',user);
-           if(user){
+           if(user.uid === "IN9Dn6Ij76VXkM03aLmFni2987Z2"){
              this.admin.email = user.auth.email;
              this.admin.signedIn = true;
            }else{

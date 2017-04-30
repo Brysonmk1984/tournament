@@ -3,23 +3,25 @@ import { Component } from '@angular/core';
 @Component({
 	template : `
 		<div id="sideBar">
-			
-
+			<a routerLink="/sign-in" class="icon_container">
+				<i class="fa fa-user" aria-hidden="true"></i>
+			</a>
 			<a routerLink="/standings" class="icon_container">
 				<i class="fa fa-list-ol" aria-hidden="true"></i>
-			</a>
-			<a routerLink="/add" class="icon_container">
-				<i class="fa fa-trophy" aria-hidden="true"></i>
 			</a>
 			<a routerLink="/player" class="icon_container">
 				<i class="fa fa-drivers-license-o" aria-hidden="true"></i>
 			</a>
+			<a routerLink="/add" class="icon_container">
+				<i class="fa fa-trophy" aria-hidden="true"></i>
+			</a>
+			<a routerLink="/chat" class="icon_container">
+				<i class="fa fa-comments-o" aria-hidden="true"></i>
+			</a>
 			<a routerLink="/rules" class="icon_container">
 				<i class="fa fa-file-text-o " aria-hidden="true"></i>
 			</a>
-			<a routerLink="/sign-in" class="icon_container">
-				<i class="fa fa-user" aria-hidden="true"></i>
-			</a>
+			
 		</div>
 	`,
 	selector : 'sidebar-component',

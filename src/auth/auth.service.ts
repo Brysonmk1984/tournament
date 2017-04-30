@@ -15,7 +15,7 @@ export class AuthService {
     });
   }
 
-   submit(form){
+   signIn(form){
         return Observable.create(observer => { 
             this.af.auth.login(
                 {email : form.value.email, password: form.value.password},
@@ -30,6 +30,24 @@ export class AuthService {
             });
         });
         
+    }
+
+    createAccount(form){
+        console.log(form.email, form.password);
+        return Observable.create(observer =>{
+            this.af.auth.createUser({
+                email : form.email,
+                password : form.password
+            }).then( success =>{
+                    //console.log('success', success);
+                    observer.next({success});
+            }).catch((error:any) =>{console.log('err',error);
+                // Handle Errors here.
+                observer.next({error});
+            });
+
+        })
+
     }
 
     signOut(){

@@ -1,23 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFire, FirebaseListObservable, AuthProviders, AuthMethods } from 'angularfire2';
 
 import { AuthService } from './auth.service';
+
+
 @Component({
     moduleId: module.id,
-    selector: 'sign-in',
-    template:`
+    selector: 'create-account',
+    template : `
         <div class="page_wrapper">
             <div class="page_title_container">
               
                 <div id="loggedInStatus" *ngIf="user.signedIn then loggedIn else loggedOut"></div>
                 <ng-template #loggedIn>
-                    <h2>You Are Signed In</h2>
+                    <h2>You Are Already Signed In</h2>
                     <span class="subheader">Click 'Log out' to sign out.</span>
                 </ng-template>
                 <ng-template #loggedOut>
-                    <h2>Sign In</h2>
+                    <h2>Create Account</h2>
                     <span class="subheader">Email and password are required.</span>
                 </ng-template>
                 
@@ -25,7 +27,7 @@ import { AuthService } from './auth.service';
                 <hr />
                 <br />
             </div>
-            <form [formGroup]="signUpForm" (ngSubmit)="onSubmit(signUpForm)">
+            <form [formGroup]="createAccountForm" (ngSubmit)="onSubmit(createAccountForm)">
                 <div id="signedIn" class="inner_form_wrapper" *ngIf="user.signedIn">
                     <h4>Currently Logged In : </h4>
                     <h4 class="text-muted">{{user.email}}</h4>
@@ -44,15 +46,20 @@ import { AuthService } from './auth.service';
                             <input formControlName="password" type="password" />
                         </label>
                     </div>
+                    <div class="input_div">
+                        <label>
+                            <strong>Confirm Password:</strong>
+                            <input formControlName="confirmPassword" type="password" />
+                        </label>
+                    </div>
                     <div id="errorContainer" *ngIf="logIn.error"  class="bg-danger">
                         <strong>{{logIn.error}}</strong>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" [disabled]="!signUpForm.valid">Submit</button>
+                    <button type="submit" class="btn btn-primary btn-block" [disabled]="!createAccountForm.valid">Submit</button>
                     <div id="noAccount">
-                        <strong>No Account? Create one <a href="/create-account">here.</a></strong>
+                        <strong>Already have an account?<br />Sign in <a href="/sign-in">here.</a></strong>
                     </div>
                 </div>
-                
             </form>
         </div>
     `,
@@ -74,6 +81,9 @@ import { AuthService } from './auth.service';
             width:80px;
             
         }
+        label span.radio_span{
+            width:30px;
+        }
         #signedIn{
             text-align:center;
         }
@@ -85,11 +95,24 @@ import { AuthService } from './auth.service';
             margin-top:20px;
             text-align:center;
         }
+        #playerList{
+            list-style:none;
+        }
+        #playerList li{
+            margin:10px 0px;
+            cursor:pointer;
+        }
+        #playerList li img{
+            opacity:.6;
+        }
+        #playerList li.selected img{
+            opacity:1;
+        }
     `]
 })
 
-export class SignInComponent implements OnInit {
-    signUpForm : FormGroup;
+export class CreateAccountComponent implements OnInit{
+    createAccountForm : FormGroup;
     user : {signedIn, email} = {
         signedIn : false,
         email : ""
@@ -97,13 +120,19 @@ export class SignInComponent implements OnInit {
     logIn = {
         error : ""
     };
-    constructor( private fb: FormBuilder, private af : AngularFire, private authService : AuthService) { }
+
+
+    constructor( private fb: FormBuilder, private af : AngularFire, private authService : AuthService) { 
+
+    }
 
     ngOnInit(){
-       this.signUpForm = this.fb.group({
+       this.createAccountForm = this.fb.group({
             email :['',Validators.compose([Validators.required])],
-            password :['',Validators.compose([Validators.required])]
+            password :['',Validators.compose([Validators.required])],
+            confirmPassword :['',Validators.compose([Validators.required])]
        });
+       
 
        this.authService.watch()
         .subscribe(user =>{
@@ -117,25 +146,36 @@ export class SignInComponent implements OnInit {
            }
         });
 
+       
+      
     }
 
     onSubmit(form){
-       this.authService.signIn(form)
-       .subscribe((obs)=>{
-           console.log('OBS!', obs);
-           if(obs.hasOwnProperty("error")){
-                this.logIn.error = obs.error;
-           }else{ this.logIn.error = ""; }
-           
-            
-       });
+        console.log('form',form);
+        
+        // If password has been confirmed
+        if(form.value.password === form.value.confirmPassword){
+            this.authService.createAccount({email : form.value.email, password : form.value.password})
+            .subscribe(activity =>{
+                console.log('acc',activity);
+                if(activity.error){
+                    this.logIn.error = activity.error.message;
+                }else{
+                    this.logIn.error = "";
+                }
+            });
+        }else{
+            alert('Password mismatch');
+        }
+        
     }
 
     signOut(){
         this.authService.signOut();
-        this.signUpForm = this.fb.group({
+        this.createAccountForm = this.fb.group({
             email :['',Validators.compose([Validators.required])],
-            password :['',Validators.compose([Validators.required])]
+            password :['',Validators.compose([Validators.required])],
+            confirmPassword :['',Validators.compose([Validators.required])]
        });
     }
 }

@@ -6,8 +6,8 @@ import { HttpModule } from '@angular/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { AuthModule } from '../auth/auth.module';
-import { AuthService } from '../auth/auth.service';
-import { AlertModule } from 'ng2-bootstrap';
+//import { AlertModule } from 'ng2-bootstrap';
+
 import { AngularFireModule } from 'angularfire2';
 
 import { AppComponent } from './app.component';
@@ -19,6 +19,7 @@ import { PlayerHistoryComponent } from './playerHistory.component';
 import { StandingsComponent } from './standings.component';
 import { RulesComponent } from './rules.component';
 import { SignInComponent } from '../auth/signIn.component';
+import { CreateAccountComponent } from '../auth/createAccount.component';
 import { ChatComponent } from './chat.component';
 import { ChatMessageSubComponent } from './chatMessageSubComponent.component';
 import { FooterComponent } from './footer.component';
@@ -54,6 +55,7 @@ export const ROUTES: Routes = [
   { path : "player/:playerName", component : PlayerHistoryComponent },
 	{ path : "rules", component : RulesComponent },
   { path : "sign-in", component : SignInComponent },
+  { path : "create-account", component : CreateAccountComponent },
   { path : "chat", component : ChatComponent }
 	
 ];
@@ -68,7 +70,6 @@ export const ROUTES: Routes = [
     PlayerHistoryComponent,
     StandingsComponent,
     RulesComponent,
-    //SignInComponent,
     ChatComponent,
     ChatMessageSubComponent,
     FooterComponent,
@@ -81,10 +82,10 @@ export const ROUTES: Routes = [
     FormsModule,
     HttpModule,
     AuthModule,
-    AlertModule.forRoot(),
+    //AlertModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [AuthService, ChatService],
+  providers: [ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
