@@ -5,17 +5,28 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthService {
-  constructor( private af : AngularFire){}
+    user = {
+        signedIn : false,
+        isAdmin : false,
+        email : "",
+        uid : ""
+    };
 
-  watch(){
-    return Observable.create(observer => { 
-        this.af.auth.subscribe((user)=>{
-          observer.next(user);
+    constructor( private af : AngularFire){}
+
+    watch(){
+        return Observable.create(observer => { 
+            this.af.auth.subscribe((user)=>{
+            observer.next(user);
+            });
         });
-    });
-  }
+    }
 
-   signIn(form){
+    getUser(){
+        return this.user;
+    }
+
+    signIn(form){
         return Observable.create(observer => { 
             this.af.auth.login(
                 {email : form.value.email, password: form.value.password},
@@ -23,6 +34,10 @@ export class AuthService {
             })
             .then( success =>{
                     console.log('success', success);
+                    this.user.signedIn = true;
+                    this.user.isAdmin = success.auth.email === "brysonmk1984@gmail.com" ? true : false;
+                    this.user.email = success.auth.email;
+                    this.user.uid = success.auth.uid;
                     observer.next({success});
             }).catch((error:any) =>{
                 // Handle Errors here.
@@ -40,6 +55,10 @@ export class AuthService {
                 password : form.password
             }).then( success =>{
                     //console.log('success', success);
+                    this.user.signedIn = true;
+                    this.user.isAdmin = success.auth.email === "brysonmk1984@gmail.com" ? true : false;
+                    this.user.email = success.auth.email;
+                    this.user.uid = success.auth.uid;
                     observer.next({success});
             }).catch((error:any) =>{console.log('err',error);
                 // Handle Errors here.
@@ -52,6 +71,12 @@ export class AuthService {
 
     signOut(){
          this.af.auth.logout();
+         this.user = {
+            signedIn : false,
+            isAdmin : false,
+            email : "",
+            uid : ""
+        };
     }
 
 }

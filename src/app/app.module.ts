@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { AuthModule } from '../auth/auth.module';
-//import { AlertModule } from 'ng2-bootstrap';
+
 
 import { AngularFireModule } from 'angularfire2';
 
@@ -82,7 +82,6 @@ export const ROUTES: Routes = [
     FormsModule,
     HttpModule,
     AuthModule,
-    //AlertModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
   providers: [ChatService],

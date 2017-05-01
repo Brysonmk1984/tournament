@@ -17,7 +17,7 @@ export class ChatService{
     }
 
     post(pid, name, message){
-
+        
     }
 
     delete(messageId){
