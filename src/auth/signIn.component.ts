@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 
@@ -90,9 +90,11 @@ import { AuthService } from './auth.service';
 
 export class SignInComponent implements OnInit {
     signUpForm : FormGroup;
-    user : {signedIn, email} = {
+    user : {signedIn, isAdmin, email, uid} = {
         signedIn : false,
-        email : ""
+        isAdmin : false,
+        email : "",
+        uid : ""
     };
     logIn = {
         error : ""
@@ -105,27 +107,21 @@ export class SignInComponent implements OnInit {
             password :['',Validators.compose([Validators.required])]
        });
 
-       this.authService.watch()
-        .subscribe(user =>{
-            console.log('USER',user);
-           if(user){
-             this.user.email = user.auth.email;
-             this.user.signedIn = true;
-           }else{
-               this.user.email = "";
-               this.user.signedIn = false;
-           }
-        });
+    this.authService.watch()
+    .subscribe(user =>{
+        console.log('USER',user);
+        this.user = user;
+    });
 
     }
 
     onSubmit(form){
        this.authService.signIn(form)
        .subscribe((obs)=>{
-           console.log('OBS!', obs);
+           console.log('returned to onSubmit', obs);
            if(obs.hasOwnProperty("error")){
                 this.logIn.error = obs.error;
-           }else{ this.logIn.error = ""; }
+           }else{ this.logIn.error = "";}
            
             
        });

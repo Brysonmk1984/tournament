@@ -89,7 +89,7 @@ export class InputDataComponent implements OnInit{
 
 	ngOnInit(){
 		//this.calculateRanking.calculateRanking();
-		this.user = this.authService.getUser();
+		this.user = this.authService.watch();
 		console.log(this.user);
 		this.tournament  = this.fb.group({
 			tournamentDetails : this.fb.group({

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ChatMessageSubComponent } from './chatMessageSubComponent.component';
 import { ChatService } from './chat.service';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import { FormBuilder, FormGroup} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -24,11 +24,12 @@ import { AuthService } from '../auth/auth.service';
                     </div>
                 </div>
                 <br />
-                <div>
+                <div *ngIf="user.signedIn">
                     <form [formGroup]="sendMessageForm" (ngSubmit)="onSubmit(sendMessageForm)">
                         <div>
                             <textarea formControlName="message" id="inputText" placeholder="Enter a message to the group." autofocus></textarea>
-                            <input type="submit" class="btn btn-primary btn-block pointer" value="submit" />
+                            <br />
+                            <input type="submit" class="btn btn-primary btn-block pointer" value="submit" [disabled]="!sendMessageForm.valid"  />
                         </div>
                     </form>
                 </div>
@@ -79,7 +80,12 @@ export class ChatComponent{
     allPlayersObs : FirebaseListObservable<any>;
     isLoading = true;
     sendMessageForm : FormGroup;
-    user;
+    user : {signedIn, isAdmin, email, uid} = {
+        signedIn : false,
+        isAdmin : false,
+        email : "",
+        uid : ""
+    };
 
     constructor(private chatService : ChatService, af : AngularFire,  private fb: FormBuilder, private authService : AuthService){
         this.chatService = chatService;
@@ -88,11 +94,15 @@ export class ChatComponent{
 
     ngOnInit(){
         this.sendMessageForm = this.fb.group({
-            message :['']
+            message :['',Validators.compose([Validators.required])]
        });
 
-       this.user = this.authService.getUser();
-        console.log(this.user);
+       this.authService.watch()
+        .subscribe(user =>{
+            console.log('USER',user);
+            this.user = user;
+        });
+        
 
         let messageMatch = (function(){
             let counter = 0;
@@ -132,15 +142,21 @@ export class ChatComponent{
         let matchingPlayer = this.playersArray.find((player)=>{
             return player.email === this.user.email;
         });
-
-        /*if(matchingPlayer){
-            this.chatService.post(matchingPlayer.id, matchingPlayer.firstName, form.value.message)
+        console.log(matchingPlayer);
+        /* If existing player (Bryson has added their email to their user info in firebase) */
+        if(matchingPlayer){
+            let fullName = matchingPlayer.firstName + " " + matchingPlayer.lastName;
+            this.chatService.post(matchingPlayer.id, fullName, form.value.message)
             .subscribe(results =>{
-            
+                console.log('results',results);
             });
+        /* A registered user who has not been confirmed by bryson */
         }else{
-
-        }*/
+            this.chatService.post(100, this.user.email, form.value.message)
+            .subscribe(results =>{
+                console.log('results',results);
+            });
+        }
 
     }
     

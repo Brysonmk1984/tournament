@@ -7,8 +7,8 @@ import { Component, Input } from '@angular/core';
             <div class="details inline_block">
                 <img class="profile_image img-thumbnail" src="{{message?.player?.photoUrl || 'http://brysonkruk.com/tournament/images/blank.jpg'}}" />
                 <div class="player_names">
-                    <span class="block">{{message?.player?.firstName + ' ' + message?.player?.lastName}}</span>
-                    <em class="text-muted block">{{message?.player?.nickName}}</em>
+                    <span *ngIf="message?.player?.firstName" class="block">{{(message.player.firstName || "") + ' ' + (message?.player?.lastName || "")}}</span>
+                    <span *ngIf="!message?.player?.firstName" class="block">{{message.name}}</span>
                 </div>
             </div>
             <div class="message inline_block vertical_align_top">
