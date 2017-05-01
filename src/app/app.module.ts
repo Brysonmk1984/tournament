@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { Pipe, PipeTransform } from '@angular/core';
-
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import { AuthModule } from '../auth/auth.module';
 
 
@@ -84,7 +84,7 @@ export const ROUTES: Routes = [
     AuthModule,
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [ChatService],
+  providers: [ChatService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

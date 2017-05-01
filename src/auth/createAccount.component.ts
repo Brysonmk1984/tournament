@@ -57,7 +57,7 @@ import { AuthService } from './auth.service';
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" [disabled]="!createAccountForm.valid">Submit</button>
                     <div id="noAccount">
-                        <strong>Already have an account?<br />Sign in <a href="/sign-in">here.</a></strong>
+                        <strong>Already have an account?<br />Sign in <a href="/#/sign-in">here.</a></strong>
                     </div>
                 </div>
             </form>
@@ -113,9 +113,11 @@ import { AuthService } from './auth.service';
 
 export class CreateAccountComponent implements OnInit{
     createAccountForm : FormGroup;
-    user : {signedIn, email} = {
+    user : {signedIn, isAdmin, email, uid} = {
         signedIn : false,
-        email : ""
+        isAdmin : false,
+        email : "",
+        uid : ""
     };
     logIn = {
         error : ""
@@ -137,13 +139,7 @@ export class CreateAccountComponent implements OnInit{
        this.authService.watch()
         .subscribe(user =>{
             console.log('USER',user);
-           if(user){
-             this.user.email = user.auth.email;
-             this.user.signedIn = true;
-           }else{
-               this.user.email = "";
-               this.user.signedIn = false;
-           }
+            this.user = user;
         });
 
        
