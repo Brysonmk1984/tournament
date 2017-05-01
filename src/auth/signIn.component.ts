@@ -49,7 +49,7 @@ import { AuthService } from './auth.service';
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" [disabled]="!signUpForm.valid">Submit</button>
                     <div id="noAccount">
-                        <strong>No Account? Create one <a href="/#/create-account">here.</a></strong>
+                        <strong>No Account? Create one <a href="./#/create-account">here.</a></strong>
                     </div>
                 </div>
                 
