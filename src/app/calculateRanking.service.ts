@@ -116,7 +116,7 @@ export class CalculateRanking {
 				player.tournamentHistory = [];
 			}
 
-			//console.log('PLAYER - ', player);
+			console.log('PLAYER - ', player);
 			let playerTArray : number[] = [];
 			// For each tournament...
 			for(let item in player.tournamentHistory){
@@ -124,7 +124,7 @@ export class CalculateRanking {
 			}
 			playerTArray.reverse();
 		
-			//console.log("player T Array - ",playerTArray);
+			console.log("player T Array - ",playerTArray);
 			
 			let playedInLastT = (function(){
 				let matchingT = playerTArray.find((item)=>{
@@ -132,14 +132,18 @@ export class CalculateRanking {
 				});
 				return matchingT !== undefined ? true : false;
 			})();
-			//console.log('in last T?',playedInLastT);
+			console.log('in last T?',playedInLastT);
+			
 			let playedInSecondLastT = (function(){
-				let matchingT = playerTArray.find((item)=>{
-					return item === secondLastT.tournamentDetails.id;
-				});
+				let matchingT;
+				if(secondLastT){
+					matchingT = playerTArray.find((item)=>{
+						return item === secondLastT.tournamentDetails.id;
+					});
+				}
 				return matchingT !== undefined ? true : false;
 			})();
-			//console.log('in second last ?',playedInSecondLastT);
+			console.log('in second last ?',playedInSecondLastT);
 
 			//Find olders Ts
 		
@@ -166,7 +170,7 @@ export class CalculateRanking {
 
 
 			let playerLatestT = playerTCollection[lastT.tournamentDetails.id];
-			let playerSecondLatestT = playerTCollection[secondLastT.tournamentDetails.id];
+			let playerSecondLatestT = secondLastT ? playerTCollection[secondLastT.tournamentDetails.id] : undefined;
 			//console.log('tournamentHist',player.tournamentHistory,'latestt',playerLatestT, 'second',playerSecondLatestT);
 			
 			// Has only played in last T

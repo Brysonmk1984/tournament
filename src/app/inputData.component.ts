@@ -9,6 +9,7 @@ import { environment } from "../environments/environment";
 import { TournamentDetails } from "./TournamentDetails.interface";
 //import { TournamentPlayerDetails } from "./TournamentPlayerDetails.interface";
 import { CalculateRanking } from "./calculateRanking.service";
+import { CalculateRankingNew } from "./calculateRankingNew.service";
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -67,7 +68,8 @@ import { AuthService } from '../auth/auth.service';
 	`,
 	selector : "input-data-component",
 	styleUrls : ['./inputData.component.sass'],
-	providers : [CalculateRanking, AuthService]
+	// CalculateRanking needed here because it's not added in app.module.ts
+	providers : [CalculateRanking, CalculateRankingNew]
 })
 
 export class InputDataComponent implements OnInit{
