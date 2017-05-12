@@ -10,9 +10,10 @@ import { AuthService } from '../auth/auth.service';
     template : `
         <div class="page_wrapper">
 			<div>	
-				<h2>The Wall</h2>	
+				<h2>The Discussion Wall</h2>	
 			</div>
-			<span class="subheader">Login to post a message</span>
+			<span *ngIf="!user.signedIn" class="subheader"><a href="./#/sign-in">Login</a> to post a message</span>
+            <span *ngIf="user.signedIn" class="subheader">Post discussion related to past and future tournaments below</span>
 			<hr />
             <div id="chatWallWrapper">
                 <div id="chatWall">
@@ -49,13 +50,14 @@ import { AuthService } from '../auth/auth.service';
         #chatWallWrapper{
             width: 90%;
             margin: 20px auto;
+            
         }
         #inputText{
             width:100%;
         }
         #loadingMessagesContainer{
             text-align:center;
-            margin-top:30%;
+            margin-top:250px;
         }
         .message_sub_wrapper{
             margin-bottom:20px;
@@ -80,6 +82,8 @@ export class ChatComponent{
     allPlayersObs : FirebaseListObservable<any>;
     isLoading = true;
     sendMessageForm : FormGroup;
+    chatBox;
+    messageMatchCounter : number = 0;
     user : {signedIn, isAdmin, email, uid} = {
         signedIn : false,
         isAdmin : false,
@@ -104,60 +108,84 @@ export class ChatComponent{
         });
         
 
-        let messageMatch = (function(){
-            let counter = 0;
-            return function(thisContext){
-                counter ++;
-                if(counter >= 2){
-                    thisContext.messages.map((message)=>{
-                        message.player = thisContext.playersArray.find((player)=>{
-                            return message.pid === player.id;
-                        });
-                    });
-                }
-            }
+        
 
-        })();
-
-        this.chatService.get().subscribe(results =>{
-            this.messages = results.messages.sort((a,b) =>{
-                return a > b ? a.id : b.id;
-            }).reverse();
-            messageMatch(this);
-            this.isLoading = false;
-            console.log('messages',this.messages);
-        });
+        
 
         this.allPlayersObs.subscribe((players)=>{
-            
             this.playersArray = players;
-            messageMatch(this);
-            console.log('players',this.playersArray);
+            this.messageMatch();
         });
         
     }
 
+    ngAfterViewInit(){
+        this.chatService.get().subscribe(results =>{
+            
+            this.messages = results.messages.sort((a,b) =>{
+                return (a.id-b.id);
+            });
+            this.messageMatch();
+            
+            this.chatBox = document.getElementById("chatWall");
+            this.chatBox.scrollTop = this.chatBox.scrollHeight;
+           
+            this.isLoading = false;
+            
+        });
+
+    }
+
     onSubmit(form){
-        console.log('FD',form);
+        (<HTMLInputElement>document.getElementById("inputText")).value = "";
+        //console.log('FD',form);
         let matchingPlayer = this.playersArray.find((player)=>{
+            if(player.email === this.user.email){
+                console.log(player.email,this.user.email);
+            }
             return player.email === this.user.email;
         });
-        console.log(matchingPlayer);
+        //console.log('matching player - ', matchingPlayer);
         /* If existing player (Bryson has added their email to their user info in firebase) */
         if(matchingPlayer){
             let fullName = matchingPlayer.firstName + " " + matchingPlayer.lastName;
             this.chatService.post(matchingPlayer.id, fullName, form.value.message)
             .subscribe(results =>{
-                console.log('results',results);
+                this.messages = results.messages;
+                this.messageMatch();
+                setTimeout(function(){
+                    this.chatBox.scrollTop = this.chatBox.scrollHeight;
+                },100)
+               
             });
         /* A registered user who has not been confirmed by bryson */
         }else{
             this.chatService.post(100, this.user.email, form.value.message)
             .subscribe(results =>{
-                console.log('results',results);
+                this.messages = results.messages;
+                //console.log('results',results);
             });
         }
 
+    }
+
+    messageMatch(){
+        this.messageMatchCounter ++;
+        if(this.messageMatchCounter >= 2){
+            this.messages.map((message)=>{
+                message.player = this.playersArray.find((player)=>{
+                    if(message.pid === player.id){
+                        return message.pid === player.id;
+                    }else if(message.name === player.email){
+                        return message.name === player.email;
+                    }else{
+                        return undefined;
+                    }
+                });
+            });
+        }
+        
+            
     }
     
 }

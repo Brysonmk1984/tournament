@@ -58,7 +58,7 @@ import { AuthService } from '../auth/auth.service';
 					<div id="submitContainer" class="pull-right">
 						<button class="btn btn-default" type="button" (click)="addPlayer()" title="Add Player to This Tournament">Add Player</button>
 						<button class="btn btn-default" type="button" (click)="resetForm(tournament)">Reset</button>
-						<button class="btn btn-default" type="button" (click)="updateRankings()" title="Recalculate">Recalculate</button>
+						<button class="btn btn-default" type="button" (click)="updateRankings()" [disabled]="!user?.isAdmin" title="Recalculate">Recalculate</button>
 						<input class="btn btn-primary" type="submit" value="Submit" [disabled]="tournament.invalid || !user?.isAdmin" title="All form fields are required"   />
 					</div>
 				</div>
@@ -81,7 +81,7 @@ export class InputDataComponent implements OnInit{
 	tournamentList : any[] = [];
 	root;
 	user;
-	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRanking, private authService : AuthService){
+	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRankingNew, private authService : AuthService){
 		this.tournaments$ = af.database.list('/tournaments');
 		this.players$ = af.database.list('/players');
 		this.root = ref.database();
@@ -91,8 +91,11 @@ export class InputDataComponent implements OnInit{
 
 	ngOnInit(){
 		//this.calculateRanking.calculateRanking();
-		this.user = this.authService.watch();
-		console.log(this.user);
+		this.authService.watch()
+		.subscribe((user)=>{
+			this.user = user;
+		});
+
 		this.tournament  = this.fb.group({
 			tournamentDetails : this.fb.group({
 				date : ['',Validators.required],
@@ -321,10 +324,6 @@ export class InputDataComponent implements OnInit{
 	}
 
 	private updateRankings(){
-		if(environment.production){
-			let result = prompt('Password Pls');
-				if(result !== "graphic5"){return;}
-		}
 		this.calculateRanking.calculateRanking();
 	}
 

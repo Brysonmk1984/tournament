@@ -190,6 +190,7 @@ export class CalculateRanking {
 			
 			// Has played in last T and at least 1 older T
 			}else if(playedInLastT && !playedInSecondLastT  && numberOfTournaments >= 1){console.log('scenerio 5');
+				//console.log('RERRR',playerLatestT,oldTs);
 				player.powerScore = this.algorithms.latestButNotSecondLatestAndOlder(playerLatestT,oldTs);
 
 			// Has played in second to last T and at least 1 older T
@@ -317,7 +318,7 @@ export class CalculateRanking {
 				return parseInt(updatedRest);
 			},
 			pointsPossible(t){
-				let pp = (t.wins + t.losses + t.draws + t.byes) * 2;
+				let pp = ((t.wins + t.losses + t.draws + t.byes) * 2);
 				//console.log(pp);
 				return pp;
 			},

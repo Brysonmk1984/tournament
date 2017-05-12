@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-
+import {Router} from '@angular/router';
 @Component({
     selector : "chat-message-sub-component",
     template : `
         <div class="chat_message_wrapper">
             <div class="details inline_block">
-                <img class="profile_image img-thumbnail" src="{{message?.player?.photoUrl || 'http://brysonkruk.com/tournament/images/blank.jpg'}}" />
+                <img (click)="playerSelected(message?.player?.firstName, message?.player?.lastName)" [ngClass]="{ranked_first : message?.player?.wonLastTournament}" class="profile_image img-thumbnail" src="{{message?.player?.photoUrl || 'http://brysonkruk.com/tournament/images/blank.jpg'}}" />
                 <div class="player_names">
                     <span *ngIf="message?.player?.firstName" class="block">{{(message.player.firstName || "") + ' ' + (message?.player?.lastName || "")}}</span>
                     <span *ngIf="!message?.player?.firstName" class="block">{{message.name}}</span>
@@ -27,7 +27,15 @@ import { Component, Input } from '@angular/core';
 		.player_names{
 			cursor: pointer;
             margin-top:10px;
+            width:120px;
+            overflow:hidden;
+            text-overflow: clip; 
 		}
+        .player_names span{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow:hidden;
+        }
         .message{
             padding:10px;
             border: 1px solid #ddd;
@@ -45,6 +53,21 @@ import { Component, Input } from '@angular/core';
 export class ChatMessageSubComponent{
     @Input() message;
     selectedPlayer = "";
+    parentRouter;
+	constructor(router : Router) {
+		this.parentRouter = router;
+	}
+
+    playerSelected(firstName : string, lastName? : string){
+		if(lastName){
+			this.parentRouter.navigateByUrl('/player/' + firstName.toLowerCase() + "-" + lastName.toLowerCase());
+		}else if(firstName){
+			this.parentRouter.navigateByUrl('/player/' + firstName.toLowerCase());
+		}else{
+            return;
+        }
+		
+	}
 
     
 }

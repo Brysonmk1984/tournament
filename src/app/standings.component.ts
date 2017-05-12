@@ -135,8 +135,8 @@ export class StandingsComponent{
 			}
 
 			this.allPlayers.subscribe(players => {
-		  			  console.log('players',players);
-		  			 this.playerList = players.sort(compare);
+		  		//console.log('players',players);
+		  		this.playerList = players.sort(compare);
 		  			  
 		  	});
 	}
