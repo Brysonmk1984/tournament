@@ -20,10 +20,11 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 				<table class="table table-list table-striped">
 					<tr>
-						<th colspan="2">Player</th>
+						<th>Player</th>
 						<th class="small_screen_hide"></th>
+						<th class="small_screen_hide"></th>
+						<th class="text-right primary_column">Power Rank</th>
 						<th class="text-right">Overall Rank</th>
-						<th class="text-right">Power Rank</th>
 						
 						<th class="text-right small_screen_hide">1st Place FInishes</th>
 						<th class="text-right">Match Wins</th>
@@ -38,10 +39,10 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 								<span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span>
 							</div>
 						</td>
-						<td (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
+						<td class="small_screen_hide" (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
 						<td class="small_screen_hide"><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span></td>
+						<td class="text-right primary_column"><span class="large_text">{{player.powerRanking}}</span> <em class="text-muted small">({{player.powerScore}})</em></td>
 						<td class="text-right"><span class="large_text">{{player.overallRanking}}</span> <em class="text-muted small">({{player.overallScore}})</em></td>
-						<td class="text-right"><span class="large_text">{{player.powerRanking}}</span> <em class="text-muted small">({{player.powerScore}})</em></td>
 						
 						<td class="text-right small_screen_hide">{{player.firstPlaces}}</td>
 						<td class="text-right">{{player.matchWins}}</td>
@@ -93,6 +94,9 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 		.large_text{
 			font-size:1.2em;
 		}
+		.primary_column{
+			background-color:rgba(240,120,71,.1);
+		}
 		@media(max-width:805px){
 			.small_screen_hide{
 				display:none;
@@ -110,6 +114,9 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 				display:inline-block;
 				width:70px !important;
 			}
+			.table th, .table td{
+				padding:.25rem;
+			}
 		}
 		
 		
@@ -126,17 +133,10 @@ export class StandingsComponent{
 	}
 
 	ngOnInit(){
-			function compare(a,b){
-				if (a.overallRanking < b.overallRanking)
-				    return -1;
-				if (a.overallRanking > b.overallRanking)
-				   return 1;
-				return 0;
-			}
-
 			this.allPlayers.subscribe(players => {
-		  		//console.log('players',players);
-		  		this.playerList = players.sort(compare);
+		  		this.playerList = players.sort((a,b)=>{
+					  return (a.powerRanking - b.powerRanking);
+				  });
 		  			  
 		  	});
 	}

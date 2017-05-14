@@ -1,351 +1,268 @@
 import { Injectable, Inject } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseRef } from 'angularfire2';
+import { FirebaseRef } from 'angularfire2';
+import { PlayerTournament, Player, PlayerNameInfo, Colors, PlayerForm, TournamentDetails, Tournament } from './interface';
+
+enum Weight{
+	Full = 100,
+	Heavy = 70,
+	Medium = 30,
+	MediumLight = 20,
+	Light = 10
+}
 
 @Injectable()
 export class CalculateRanking {
-	allPlayers$ : FirebaseListObservable<any>;
-	allTournaments$ : FirebaseListObservable<any>;
 	root;
-	playerList : any[] = [];
+	playerList : Player[];
 	tournamentList : any[] = [];
-	constructor(af : AngularFire, @Inject(FirebaseRef) ref){
-		this.allPlayers$ = af.database.list('/players');
-		this.allTournaments$ = af.database.list('/tournaments');
+	weight = Weight;
+	constructor(@Inject(FirebaseRef) ref){
 		this.root = ref.database();
 	}
+	//constructor(p,t){this.playerList = p;this.tournamentList = t;}
 
-	calculateRanking(){
-
-		//all tournaments
-		this.allTournaments$.subscribe(tournaments =>{
-			this.tournamentList = tournaments.sort((a,b) =>{
-				return a.id - b.id;
-			}).reverse();
-		});
-
-
-		//get players from DB
-		this.playerList = this.root.ref('players/').once('value',(snap)=>{
-			//console.log('players snapsnap',snap.val());
-
-			this.playerList = snap.val();
+	public calculateRanking(){
+		let ayncCount = 0;
+		function calcFunctions(){
+			//Calculate Overall Score
+			this.determineOverallScore();
 			
-			// Calculate  total score
-			this.addTotalScore();
-
-			//Calculate overall ranking
+			//Calculate Overall Rank
 			this.determineOverallRank();
-
-			//Calculate power ranking score
+			
+			//Calculate Power Score
 			this.determinePowerScore();
 
-			//Calculate power ranking
+			//Calculate Power Ranking
 			this.determinePowerRanking();
-
-
+		}
+		
+		// retrieve tournaments from Firbase. If Tournaments and Players are retrieved, call the calcFunctions
+		this.root.ref('tournaments/').once('value',(snap)=>{
+			let tournaments = snap.val();
+			this.tournamentList = tournaments.sort((a,b) =>{
+				return b.id - a.id;
+			});
+			ayncCount ++;
+			if(ayncCount === 2)calcFunctions.call(this);
+		});
+		// retrieve players from Firbase. If Tournaments and Players are retrieved, call the calcFunctions
+		this.root.ref('players/').once('value',(snap)=>{
+			this.playerList = snap.val();
+			ayncCount ++;
+			if(ayncCount === 2) calcFunctions.call(this);
+			
 		});
 
-
 	}
+	
 
-
-	private addTotalScore(){
-		// For each Player
-		this.playerList.forEach(player=>{
-			let totalScore = 0;
-			
-			// For each tournament...
-			for(let item in player.tournamentHistory){
-				totalScore += player.tournamentHistory[item].score;
+	private determineOverallScore() : Player[]{
+		let playerList : any = this.playerList.forEach((player : Player)=>{
+			player.overallScore = 0;
+			// If the player participated in a tournament
+			if(player.tournamentHistory){
+				player.tournamentHistory.forEach((tournament) =>{
+					player.overallScore += tournament.score;
+				});
 			}
-
-			player.overallScore = totalScore;
-
-			//console.log('overall score - ', player.overallScore);
-			//Update Overall Score
+			//console.log(player.firstName, player.overallScore);
 			this.updateDbPlayerValue(player.id,"overallScore",player.overallScore);
 		});
+		return this.playerList;
 	}
 
-	private determineOverallRank(){
-		this.playerList.sort((a,b)=>{
-			if(a.overallScore-b.overallScore === 0){
-				return a.matchWins-b.matchWins;
+	private determineOverallRank() : Player[]{
+		
+		let playerList : any = this.playerList.sort((a : Player , b : Player)=>{
+			// If same overall score, break tie with match wins
+			if(b.overallScore === a.overallScore){
+				// If same overall score AND same wins, break tie with least match losses
+				if(b.matchWins === a.matchWins){
+					// If same overall score AND same wins AND same losses, break with match ties
+					if(b.matchLosses === a.matchLosses){
+						// If same overall score AND same wins AND same losses AND ties, break with first place finishes
+						if(b.matchDraws === a.matchDraws){
+							return (b.firstPlaces - a.firstPlaces);
+						}
+						return (b.matchDraws - a.matchDraws);
+					}
+					return (a.matchLosses - b.matchLosses);
+				}
+				return (b.matchWins - a.matchWins);
 			}
-			  	return a.overallScore-b.overallScore;
-			}).reverse();
-		//console.log('opa',this.playerList);
-
-		this.playerList.forEach((player, i) =>{
-			player.overallRanking = i +1;
-			//Update Overall Ranking in DB
+			return (b.overallScore - a.overallScore);
+		}).forEach((player : Player, index : number)=>{
+			player.overallRanking = index + 1;
+			//console.log('player',player.firstName, player.overallScore);
 			this.updateDbPlayerValue(player.id,"overallRanking",player.overallRanking);
 		});
-		//console.log('updatedrankings',this.playerList);
-
+		
+		return this.playerList;
 	}
 
-	private updateDbPlayerValue(playerId,property,value){
-		let specificDbPlayer = this.root.ref('players/' + playerId);
-		/*specificDbPlayer.child(property).once('value', (snap)=>{
-			console.log('snap',snap.val());
-		});*/
-		
-		specificDbPlayer.child(property).set(value);
-		
-		
-
-	}
-
-
-	private determinePowerScore(){
-
+	private determinePowerScore() : Player[]{
+		// Sort tournaments by id, which orders the latest tournaments with the highest id first
+		this.tournamentList.sort((a : Tournament, b : Tournament)=>{
+			return b.tournamentDetails.id - a.tournamentDetails.id;
+		});
 
 		let lastT = this.tournamentList[0];
 		let secondLastT = this.tournamentList[1];
-		console.log('last tourn',lastT);
-		
 
-		// For each Player
-		//this.playerList = [this.playerList[3]];
-		this.playerList.forEach(player=>{//console.log('CURRENT PLAYER', player.firstName, player);
-			let numberOfTournaments = player.tournamentHistory ? player.tournamentHistory.length  : 0;
-			console.log(player.id);
-			// Because of Clay... can remove later prob...
-			if(numberOfTournaments === 0){
-				player.tournamentHistory = [];
-			}
-
-			console.log('PLAYER - ', player);
-			let playerTArray : number[] = [];
-			// For each tournament...
-			for(let item in player.tournamentHistory){
-				playerTArray.push(player.tournamentHistory[item].id);
-			}
-			playerTArray.reverse();
-		
-			console.log("player T Array - ",playerTArray);
-			
-			let playedInLastT = (function(){
-				let matchingT = playerTArray.find((item)=>{
-					return item === lastT.tournamentDetails.id;
-				});
-				return matchingT !== undefined ? true : false;
-			})();
-			console.log('in last T?',playedInLastT);
-			
-			let playedInSecondLastT = (function(){
-				let matchingT;
-				if(secondLastT){
-					matchingT = playerTArray.find((item)=>{
-						return item === secondLastT.tournamentDetails.id;
-					});
+		// For each Player, determine tournament participation
+		this.playerList.forEach(player=>{
+			let playerTConfig : {lastT : boolean | PlayerTournament, secondLastT : boolean | PlayerTournament, oldTs : any[], totalTs : number} = {lastT : false, secondLastT : false, oldTs : [], totalTs : 0};
+			player.tournamentHistory.forEach((t)=>{
+				// If current tournament is defined, accounts for undefined spots in firebase
+				if(t){
+					if(t.id === lastT.tournamentDetails.id){
+						playerTConfig.lastT = t;
+					}else if(t.id === secondLastT.tournamentDetails.id){
+						playerTConfig.secondLastT = t;
+					}else{
+						playerTConfig.oldTs.push(t);
+					}
+					playerTConfig.totalTs ++;
 				}
-				return matchingT !== undefined ? true : false;
-			})();
-			console.log('in second last ?',playedInSecondLastT);
-
-			//Find olders Ts
-		
-			//console.log('player T hist',player.tournamentHistory);
-			let oldTs = player.tournamentHistory.filter(item =>{
-				return playerTArray.filter( id =>{
-					//console.log('id', id, 'item', item.id, 'lt',lastT.tournamentDetails.id,'slt',secondLastT.tournamentDetails.id);
-					return id === item.id && id !== lastT.tournamentDetails.id &&  id !== secondLastT.tournamentDetails.id ;
-				});
-
-		
-
-	
 			});
-			//console.log('array of matches',oldTs);
-			
-			
-			let playerTCollection = [];
-			for(let i = 0; i<player.tournamentHistory.length;i++){
-				if(player.tournamentHistory[i] !== undefined){
-					playerTCollection.push(player.tournamentHistory[i]);
-				}
-			}
-
-
-			let playerLatestT = playerTCollection[lastT.tournamentDetails.id];
-			let playerSecondLatestT = secondLastT ? playerTCollection[secondLastT.tournamentDetails.id] : undefined;
-			//console.log('tournamentHist',player.tournamentHistory,'latestt',playerLatestT, 'second',playerSecondLatestT);
-			
-			// Has only played in last T
-			if(playedInLastT && numberOfTournaments === 1){console.log('scenerio 1');
-				player.powerScore = this.algorithms.oneTournament(playerLatestT);
-			// Has only played in the last two Ts
-			}else if(playedInLastT && playedInSecondLastT && numberOfTournaments === 2){console.log('scenerio 2');
-				player.powerScore = this.algorithms.twoTournaments(playerLatestT, playerSecondLatestT);
-			
-			// Has played in last two Ts and at least one more previous
-			}else if(playedInLastT && playedInSecondLastT && numberOfTournaments > 2){console.log('scenerio 3');
-				player.powerScore = this.algorithms.overTwoTournaments(playerLatestT,playerSecondLatestT, oldTs);
-			
-			// Has played in only the second to last T
-			}else if(playedInSecondLastT && numberOfTournaments === 1){console.log('scenerio 4');
-				player.powerScore = this.algorithms.onlySecondLatest(playerSecondLatestT);
-			
-			// Has played in last T and at least 1 older T
-			}else if(playedInLastT && !playedInSecondLastT  && numberOfTournaments >= 1){console.log('scenerio 5');
-				//console.log('RERRR',playerLatestT,oldTs);
-				player.powerScore = this.algorithms.latestButNotSecondLatestAndOlder(playerLatestT,oldTs);
-
-			// Has played in second to last T and at least 1 older T
-			}else if(playedInSecondLastT && !playedInLastT && numberOfTournaments >= 1){console.log('scenerio 6');
-				player.powerScore = this.algorithms.secondLatestAndOlder(playerSecondLatestT,oldTs);
-
-			// Has only played old Ts (past last two)
-			}else if(!playedInLastT && !playedInSecondLastT && numberOfTournaments >=1){console.log('scenerio 7');
-				player.powerScore = this.algorithms.onlyOlder(oldTs);
-			}
-			console.log('Power score',parseInt(player.powerScore), 'playerid',player.id);
-			this.updateDbPlayerValue(player.id,"powerScore",parseInt(player.powerScore));
-			
+			//console.log('player - ',player.firstName);
+			// Determine appropriate algorithm then call it
+			player.powerScore = this.algorithms(playerTConfig);
+			this.updateDbPlayerValue(player.id,"powerScore",player.powerScore);
 		});
+		return this.playerList;
 	}
 
-	private determinePowerRanking(){
+	private determinePowerRanking() : Player[]{
 		let powerRankingArray = this.playerList.sort((a,b)=>{
-			return a.powerScore - b.powerScore;
-		}).reverse();
-
-		this.playerList.forEach((player, i) =>{
+			return b.powerScore - a.powerScore;
+		})
+		powerRankingArray.forEach((player, i) =>{
 			player.powerRanking = i +1;
-
-			//console.log('PR', player.powerRanking);
 			//Update Overall Ranking in DB
 			this.updateDbPlayerValue(player.id,"powerRanking",player.powerRanking);
-
 		});
+		return this.playerList;
 	}
 
-	algorithms = {
-			oneTournament(first){//console.log('in first');
-				let pp = this.pointsPossible(first);
-				let updatedScore = ((first.score/pp) * 100).toFixed(2);
-				//console.log('score', updatedScore);
-				return updatedScore;
-			},
-			twoTournaments(first, second){//console.log('in second');
-				let updatedFirst, updatedSecond,updatedFinal;
-			
-				
-				(() =>{
-					let pp = this.pointsPossible(first);
-					updatedFirst = ((first.score/pp) * 70).toFixed(2);
-					//console.log(updatedFirst);
-				})();
 
-				(() =>{
-					let pp = this.pointsPossible(second);
-					updatedSecond = ((second.score/pp) * 30).toFixed(2);
-					//console.log('u2',updatedSecond);
-				})();
+	private algorithms(h){
+		let w = this.weight;
+		// Has only played in last T
+		if(h.lastT && h.totalTs === 1){console.log('scenerio 1, lastOnly');
 
-				(() =>{
-					updatedFinal = parseInt(updatedFirst) + parseInt(updatedSecond);
-					//console.log('u1',updatedFirst,'u2',updatedSecond,'uf',updatedFinal);
-				})();
+			let pp = this.pointsPossible(h.lastT);
+			let updatedScore = +((h.lastT.score/pp) * w.Full).toFixed(2);
+			//console.log('score', updatedScore);
+			return updatedScore;
 
-				//console.log('final',updatedFinal);
-				return updatedFinal;
-			},
-			overTwoTournaments(first, second, theRest){//console.log('in third');
-				//console.log('first',first,'second', second,'third',theRest);
-				let updatedFirst, updatedSecond,oldTAverage,updatedFinal;
+		// Has only played in the last two Ts
+		}else if(h.lastT && h.secondLastT && h.totalTs === 2){console.log('scenerio 2, lastTwoOnly');
+			const powerScore : {lastT : number, secondLastT : number} = {
+				lastT : 0,
+				secondLastT : 0
+			};
 
-				(() =>{
-					let pp = this.pointsPossible(first);
-					updatedFirst = ((first.score/pp) * 70).toFixed(2);
-					//console.log(updatedFirst);
-				})();
+			// Calculated Last Tournament Score
+			let pp = this.pointsPossible(h.lastT);
+			powerScore.lastT = +((h.lastT.score/pp) * w.Heavy).toFixed(2);
 
-				(() =>{
-					let pp = this.pointsPossible(second);
-					updatedSecond = ((second.score/pp) * 20).toFixed(2);
-					//console.log('u2',updatedSecond);
-				})();
+			// Calculated Second to Last Tournament Score
+			pp = this.pointsPossible(h.secondLastT);
+			powerScore.secondLastT  = +((h.secondLastT.score/pp) * w.Medium).toFixed(2);
 
-				(() =>{
-	
-					let oldTTotal = 0;
-					theRest.forEach(t =>{
-
-						let pp = this.pointsPossible(t);
-						oldTTotal += parseInt(((t.score/pp) * 10).toFixed(2));
-						
-					});
-					oldTAverage = oldTTotal / theRest.length;
-			
-				})();
-
-				(() =>{
-					updatedFinal = parseInt(updatedFirst) + parseInt(updatedSecond) +parseInt(oldTAverage);
-					//console.log('FINAL',updatedFinal);
+			//console.log(powerScore.lastT + powerScore.secondLastT);
+			return powerScore.lastT + powerScore.secondLastT;
 		
-				})();
+		// Has played in last two Ts and at least one more previous
+		}else if(h.lastT && h.secondLastT && h.totalTs > 2){console.log('scenerio 3, lastTwoAndOlder');
+			const powerScore : {lastT : number, secondLastT : number, olderTotal : number} = {
+				lastT : 0,
+				secondLastT : 0,
+				olderTotal : 0
+			};
 
-				return updatedFinal;
-			},
-			latestButNotSecondLatestAndOlder(first,theRest){
-				let pp = this.pointsPossible(first);
-				let updatedFirst = ((first.score/pp) * 70).toFixed(2);
-				let updatedRest = (this.theRest(theRest) * 10).toFixed(2);
+			// Calculated Last Tournament Score
+			let pp = this.pointsPossible(h.lastT);
+			powerScore.lastT = +((h.lastT.score/pp) * w.Heavy).toFixed(2);
 
+			// Calculated Second to Last Tournament Score
+			pp = this.pointsPossible(h.secondLastT);
+			powerScore.secondLastT  = +((h.secondLastT.score/pp) * w.MediumLight).toFixed(2);
+
+			// Calculated Older Tournament Scores
+			h.oldTs.forEach(t =>{
+				let pp = this.pointsPossible(t);
+				powerScore.olderTotal += +((t.score/pp) * w.Light).toFixed(2);
+			});
+				
+			//console.log('FINAL',powerScore.lastT + powerScore.secondLastT + (powerScore.olderTotal / h.oldTs.length));
+			return powerScore.lastT + powerScore.secondLastT + (powerScore.olderTotal / h.oldTs.length);
+		
+		// Has played in only the second to last T
+		}else if(h.secondLastT && h.totalTs === 1){console.log('scenerio 4, secondToLastOnly');
+			let pp = this.pointsPossible(h.secondLastT);
+			return +((h.secondLastT.score/pp) * w.Medium).toFixed(2);
+
+		// Has played in last T and at least 1 older T
+		}else if(h.lastT && !h.secondLastT  && h.totalTs >= 1){console.log('scenerio 5, lastAndOlder');
+			const powerScore : {lastT : number, olderTotal : number} = {
+				lastT : 0,
+				olderTotal : 0
+			};
+
+			let pp = this.pointsPossible(h.lastT);
+				powerScore.lastT = +((h.lastT.score/pp) * w.Heavy).toFixed(2);
 			
-				return parseInt(updatedFirst) + parseInt(updatedRest);
-			},
-			onlySecondLatest(second){
-				let pp = this.pointsPossible(second);
-				let updatedSecond = ((second.score/pp) * 20).toFixed(2);
+			// Calculated Older Tournament Scores
+			h.oldTs.forEach(t =>{
+				let pp = this.pointsPossible(t);
+				powerScore.olderTotal += +((t.score/pp) * w.Light).toFixed(2);
+			});
 
-				return parseInt(updatedSecond)
-			},
-			secondLatestAndOlder(second,theRest){
-				let pp = this.pointsPossible(second);
-				let updatedSecond = ((second.score/pp) * 20).toFixed(2);
-				let updatedRest = (this.theRest(theRest) * 10).toFixed(2);
+			return powerScore.lastT + powerScore.olderTotal;
+		// Has played in second to last T and at least 1 older T
+		}else if(h.secondLastT && !h.lastT && h.totalTs >= 1){console.log('scenerio 6, secondToLastAndOlder');
+			const powerScore : {secondLastT : number, olderTotal : number} = {
+				secondLastT : 0,
+				olderTotal : 0
+			};
 
-				
-				return parseInt(updatedSecond) + parseInt(updatedRest);
-			},
-			onlyOlder(theRest){console.log('THE REST', theRest);
-				let updatedRest = (this.theRest(theRest) * 10).toFixed(2);
-
-				return parseInt(updatedRest);
-			},
-			pointsPossible(t){
-				let pp = ((t.wins + t.losses + t.draws + t.byes) * 2);
-				//console.log(pp);
-				return pp;
-			},
-			theRest(theRest){
-				let oldTAverage ,updatedFinal;
-				(() =>{
-				
-					let oldTTotal = 0;
-					theRest.forEach(t =>{
-
-						let pp = this.pointsPossible(t);
-						oldTTotal += parseInt(((t.score/pp) * 10).toFixed(2));
-						
-					});
-					oldTAverage = oldTTotal / theRest.length;
-				
-				})();
-
-				(() =>{
-					updatedFinal = parseInt(oldTAverage);
-					//console.log('rest final',updatedFinal);
-				})();
-
-				return updatedFinal;
-			}
-
+			let pp = this.pointsPossible(h.secondLastT);
+				powerScore.secondLastT = +((h.secondLastT.score/pp) * w.Medium).toFixed(2);
+			
+			// Calculated Older Tournament Scores
+			h.oldTs.forEach(t =>{
+				let pp = this.pointsPossible(t);
+				powerScore.olderTotal += +((t.score/pp) * w.Light).toFixed(2);
+			});
+			return powerScore.secondLastT + powerScore.olderTotal;
+		// Has only played old Ts (past last two)
+		}else if(!h.lastT && !h.secondLastT && h.totalTs >=1){console.log('scenerio 7, olderOnly');
+			const powerScore : {olderTotal : number} = {
+				olderTotal : 0
+			};
+			// Calculated Older Tournament Scores
+			h.oldTs.forEach(t =>{
+				let pp = this.pointsPossible(t);
+				powerScore.olderTotal += +((t.score/pp) * w.Light).toFixed(2);
+			});
+			return powerScore.olderTotal;
+		// Shouldn't happen
+		}else{console.log("scenerio shouldn't be here");
+			console.error(new Error("Unexpected algorithm scenerio!"));
+		}
+		
+	}
+	private pointsPossible(t) : number{
+		let pp = ((t.wins + t.losses + t.draws + t.byes) * 2);
+		return pp;
 	}
 
+	private updateDbPlayerValue(playerId,property,value) : void{
+		let specificDbPlayer = this.root.ref('players/' + playerId);
+		specificDbPlayer.child(property).set(value);
+	}
 
 }

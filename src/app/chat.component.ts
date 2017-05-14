@@ -18,7 +18,7 @@ import { AuthService } from '../auth/auth.service';
             <div id="chatWallWrapper">
                 <div id="chatWall">
                     <div id="loadingMessagesContainer"  [hidden]="!isLoading">
-                        <h3 class="text-muted">Retrieving messages from Heroku Node.js Server...</h3>
+                        <h3>Retrieving messages from Heroku Node.js Server...</h3>
                     </div>
                     <div class="message_sub_wrapper" [hidden]="isLoading" *ngFor="let message of messages; let i = index">
                         <chat-message-sub-component [message]="message"></chat-message-sub-component>
@@ -42,7 +42,11 @@ import { AuthService } from '../auth/auth.service';
             padding:20px;
             border-radius: 4px;
             border: solid 1px black;
-            background-color:#2B2B2B;
+            background: url(http://brysonkruk.com/mtg/images/mtgGraphic.jpg);
+            background-repeat:  no-repeat;
+            background-size: 100% auto;
+            background-position: center;
+            background-color: #000000;
             color: #E5E5E5;
             height:600px;
             overflow-y:scroll;
@@ -58,6 +62,7 @@ import { AuthService } from '../auth/auth.service';
         #loadingMessagesContainer{
             text-align:center;
             margin-top:250px;
+            color:white;
         }
         .message_sub_wrapper{
             margin-bottom:20px;
@@ -73,6 +78,19 @@ import { AuthService } from '../auth/auth.service';
         }
         /deep/ .message_sub_wrapper:nth-child(odd) .details{
             margin-right:10px;
+        }
+
+        /deep/ @media(max-width:805px){
+            #chatWallWrapper #chatWall{
+                padding: 8px;
+            }
+            .message{
+                font-size: .8rem;
+                padding: 2px;
+            }
+            .player_names{
+                width:90px;
+            }
         }
     `]
 })

@@ -9,7 +9,6 @@ import { environment } from "../environments/environment";
 import { TournamentDetails } from "./TournamentDetails.interface";
 //import { TournamentPlayerDetails } from "./TournamentPlayerDetails.interface";
 import { CalculateRanking } from "./calculateRanking.service";
-import { CalculateRankingNew } from "./calculateRankingNew.service";
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -69,7 +68,7 @@ import { AuthService } from '../auth/auth.service';
 	selector : "input-data-component",
 	styleUrls : ['./inputData.component.sass'],
 	// CalculateRanking needed here because it's not added in app.module.ts
-	providers : [CalculateRanking, CalculateRankingNew]
+	providers : [CalculateRanking]
 })
 
 export class InputDataComponent implements OnInit{
@@ -81,7 +80,7 @@ export class InputDataComponent implements OnInit{
 	tournamentList : any[] = [];
 	root;
 	user;
-	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRankingNew, private authService : AuthService){
+	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRanking, private authService : AuthService){
 		this.tournaments$ = af.database.list('/tournaments');
 		this.players$ = af.database.list('/players');
 		this.root = ref.database();

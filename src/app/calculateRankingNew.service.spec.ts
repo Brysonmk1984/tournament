@@ -2,15 +2,15 @@
 
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { CalculateRankingNew } from './calculateRankingNew.service';
+import { CalculateRanking } from './calculateRanking.service';
 import { AngularFire, FirebaseListObservable, FirebaseRef } from 'angularfire2';
 import { MockData } from './mockData';
 
 describe("calculateRankingNew service",()=>{
-    let service : CalculateRankingNew;
+    let service : CalculateRanking;
     let mockData : MockData = new MockData();
 
-    beforeEach(()=>{service = new CalculateRankingNew(mockData.players, mockData.tournaments})
+    beforeEach(()=>{service = new CalculateRanking();
     
 
     it('Brysons score should be 11', () => {

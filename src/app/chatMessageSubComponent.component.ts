@@ -27,7 +27,7 @@ import {Router} from '@angular/router';
 		.player_names{
 			cursor: pointer;
             margin-top:10px;
-            width:120px;
+            width:110px;
             overflow:hidden;
             text-overflow: clip; 
 		}
@@ -45,6 +45,9 @@ import {Router} from '@angular/router';
             max-width:60%;
             word-wrap: break-word;
             text-align:left;
+        }
+        .message p{
+            margin-bottom: .0rem;
         }
     `]
 
