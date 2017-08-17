@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import suffix from "../utility/placementSuffix";
 
 @Component({
 	template : `
@@ -41,8 +42,8 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 						</td>
 						<td class="small_screen_hide" (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
 						<td class="small_screen_hide"><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span></td>
-						<td class="text-right primary_column"><span class="large_text">{{player.powerRanking}}</span> <em class="text-muted small">({{player.powerScore}})</em></td>
-						<td class="text-right"><span class="large_text">{{player.overallRanking}}</span> <em class="text-muted small">({{player.overallScore}})</em></td>
+						<td class="text-right primary_column"><span class="large_text">{{player.powerRanking | suffix}}</span> <em class="text-muted small">({{player.powerScore}})</em></td>
+						<td class="text-right"><span class="large_text">{{player.overallRanking | suffix}}</span> <em class="text-muted small">({{player.overallScore}})</em></td>
 						
 						<td class="text-right small_screen_hide">{{player.firstPlaces}}</td>
 						<td class="text-right">{{player.matchWins}}</td>
@@ -92,7 +93,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 			display:none;
 		}
 		.large_text{
-			font-size:1.2em;
+			font-size:1.1em;
 		}
 		.primary_column{
 			background-color:rgba(240,120,71,.1);

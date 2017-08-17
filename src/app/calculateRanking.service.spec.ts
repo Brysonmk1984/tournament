@@ -10,7 +10,7 @@ describe("calculateRankingNew service",()=>{
     let service : CalculateRanking;
     let mockData : MockData = new MockData();
 
-    beforeEach(()=>{service = new CalculateRanking();
+  
     
 
     it('Brysons score should be 11', () => {

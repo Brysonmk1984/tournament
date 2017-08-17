@@ -26,4 +26,8 @@ interface Tournament{
     playerFormsArray : PlayerForm, tournamentDetails : TournamentDetails
 }
 
-export {PlayerTournament, Player, PlayerNameInfo, Colors, PlayerForm, TournamentDetails, Tournament};
+interface User{
+    signedIn : boolean, isAdmin : boolean, email : string, uid : string
+}
+
+export {PlayerTournament, Player, PlayerNameInfo, Colors, PlayerForm, TournamentDetails, Tournament, User};

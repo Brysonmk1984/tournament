@@ -6,10 +6,10 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {AngularFire, FirebaseListObservable, FirebaseRef} from 'angularfire2';
 import { environment } from "../environments/environment";
-import { TournamentDetails } from "./TournamentDetails.interface";
-//import { TournamentPlayerDetails } from "./TournamentPlayerDetails.interface";
+
 import { CalculateRanking } from "./calculateRanking.service";
 import { AuthService } from '../auth/auth.service';
+import { PlayerTournament, Player, PlayerNameInfo, Colors, PlayerForm, TournamentDetails, Tournament, User } from './interface';
 
 @Component({
 	template : `
@@ -76,22 +76,22 @@ export class InputDataComponent implements OnInit{
 	tournament : FormGroup;
 	tournaments$ : FirebaseListObservable<any>;
 	players$: FirebaseListObservable<any>;
-	playerList : any[] = [];
-	tournamentList : any[] = [];
-	root;
-	user;
+	playerList : Player[] = [];
+	tournamentList : Tournament[] = [];
+	root : any;
+	user : User;
+
 	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRanking, private authService : AuthService){
 		this.tournaments$ = af.database.list('/tournaments');
 		this.players$ = af.database.list('/players');
 		this.root = ref.database();
-
-		
 	}
 
 	ngOnInit(){
 		//this.calculateRanking.calculateRanking();
 		this.authService.watch()
-		.subscribe((user)=>{
+		.subscribe((user : User) : void =>{
+			
 			this.user = user;
 		});
 
@@ -115,7 +115,7 @@ export class InputDataComponent implements OnInit{
 		this.tournaments$.subscribe(tournaments => {
 			this.tournamentList = tournaments;
 		});
-		
+		console.log('ROOT',this.root);
 	}
 
 
@@ -140,7 +140,7 @@ export class InputDataComponent implements OnInit{
 		
 		//push tournament data
 		this.root.ref('tournaments/').child(parseInt(value.tournamentDetails.id)).set(value);
-
+		
 		let participantsArray : number[] = [];
 		let nonParticipantsArray : number[] = [];
 		// Loop through each submitted player from the form
