@@ -3,12 +3,7 @@ import { Component } from "@angular/core";
 @Component({
 	template : `
 		<header>
-		<h1>MTG TOURNAMENT TRACKER</h1>
-		<!--<nav>
-		  <a routerLink="/standings">Standings</a>
-		  <a routerLink="/add">Tournament</a>
-		  <a routerLink="/player">Players</a>
-		</nav>-->
+		<h1>MTG DRAFT TRACKER</h1>
 		</header>
 	`,
 	selector : "header-component",

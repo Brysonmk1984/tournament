@@ -51,14 +51,18 @@ Highcharts.setOptions({
 					</div>
 
 			
-				</div>
+				</div><br />
+				<h3>Player Data</h3>
 				<div id="chartContainer">
-					<div id="placementOverTime" class="chart"></div>
 					<div id="colorAffiliation" class="chart"></div>
+					<div id="colorWinPercentage" class="chart"></div>
+					<div id="placementOverTime" class="chart"></div>
+					<div id="setBreakdown" class="chart"></div>
+					
 				</div>
 			
 				<div id="colorHistory"  *ngIf="selectedPlayer.tournamentHistory">
-					<h3>Tournaments</h3>
+					<h3>Tournament Results</h3>
 					<table class="table table-list table-striped">
 						<tr>
 							<th>Date</th>
@@ -158,9 +162,14 @@ export class PlayerHistoryComponent implements OnInit{
 	playerList : any[] = [];
 	selectedPlayer : any = 0;
 	allPlayers : FirebaseListObservable<any>;
-	playerTournamentData: any = [];
-	playerTournamentSets: any = [];
+	playerTournamentData : any = [];
+	playerTournamentSets : any = [];
 	colorAffiliation : any = [];
+	winPercentageByColor : any = [];
+	overallRecord : any = {wins : 0, losses : 0, draws : 0};
+	allTournamentResults : any  = [];
+	tbSeries : any = {wins:[],losses:[],draws:[]};
+
 	location;
 
 	constructor(private route: ActivatedRoute, af: AngularFire, location: Location) {
@@ -213,54 +222,8 @@ export class PlayerHistoryComponent implements OnInit{
 	}
 
 	renderCharts(playerTournamentData,playerTournamentSets){
-		
-		Highcharts.chart('placementOverTime', {
-			chart : {
-				backgroundColor: '#f5f5f5'
-			},
-			title: {
-				text: 'Tournament Placement'
-			},
-			xAxis: {
-				type: 'datetime',
-				dateTimeLabelFormats: {
-					day: '%e. %b',
-					month: '%b \'%y',
-					year: '%Y'
-				},
-				title: {
-					text: 'Date'
-				}
-			},
-			yAxis: {
-				title: {
-					text: 'Placement'
-				},
-				reversed : true,
-				tickInterval : 1,
-				floor : 1,
-				labels: {
-					formatter : function(){
-						return this.value + suffix(this.value);
-					}
-				}
-			},
-			credits : false,
-			tooltip:{
-				formatter: function () {
-					return (`<b>Placed: ${this.y + suffix(this.y)}</b><br/>
-							Set: ${this.series.options.set[this.point.index]}`);
-				}
-			},
-
-			series: [{
-				name: 'Placement',
-				data: [...playerTournamentData],
-				set : [...playerTournamentSets]
-			}]
-
-		});
-
+		console.log('asd',playerTournamentSets);
+		// CHART - Color Affiliation
 		Highcharts.chart('colorAffiliation', {
 			chart: {
 				plotBackgroundColor: null,
@@ -314,6 +277,186 @@ export class PlayerHistoryComponent implements OnInit{
 				}]
 			}]
 		});
+
+		// CHART - Win Percentage by Color
+		Highcharts.chart('colorWinPercentage', {
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'column',
+				backgroundColor: '#f5f5f5',
+			},
+			title: {
+				text: 'Win Percentage by Color'
+			},
+			xAxis: {
+				title: {
+					text: ''
+				},
+				categories : ["Red", "Blue","Green","Black","White"],
+				labels: {
+					formatter : function(){
+						return this.value;
+					}
+				}
+			},
+			yAxis: {
+				title: {
+					text: 'Win Percentage'
+				},
+				min : 0,
+				max : 100,
+				startOnTick : false,
+				endOnTick : false,
+				labels: {
+					formatter : function(){
+						return this.value + "%";
+					}
+				},
+				plotLines: [{
+					color: 'red',
+					value: 50,
+					width: 1,
+					zIndex: 1000   
+				}]
+			},
+			plotOptions: {
+				series: {pointWidth: 76}
+			},
+			tooltip: {
+				pointFormat: '<b>{point.y:.1f}%</b>'
+			},
+			legend: {
+				enabled: false
+			},
+			credits : false,
+			series: [{
+				colorByPoint: true,
+				data: [{
+					y: this.winPercentageByColor.red * 100,
+					color: '#FAAA8F'
+				}, {
+					y: this.winPercentageByColor.blue * 100,
+					color: '#A9E0F9'
+				}, {
+					y: this.winPercentageByColor.green * 100,
+					color: '#9BD3AE'
+				}, {
+					y: this.winPercentageByColor.black * 100,
+					color: '#000000'
+				}, {
+					y: this.winPercentageByColor.white * 100,
+					color: '#FFFDD7'
+				}]
+			}]
+		});
+		
+		Highcharts.chart('placementOverTime', {
+			chart : {
+				backgroundColor: '#f5f5f5'
+			},
+			title: {
+				text: 'Tournament Placement'
+			},
+			xAxis: {
+				type: 'datetime',
+				dateTimeLabelFormats: {
+					day: '%e. %b',
+					month: '%b \'%y',
+					year: '%Y'
+				},
+				title: {
+					text: 'Date'
+				}
+			},
+			yAxis: {
+				title: {
+					text: 'Placement'
+				},
+				reversed : true,
+				tickInterval : 1,
+				floor : 1,
+				labels: {
+					formatter : function(){
+						return this.value + suffix(this.value);
+					}
+				}
+			},
+			credits : false,
+			tooltip:{
+				formatter: function () {
+					return (`<b>Placed: ${this.y + suffix(this.y)}</b><br/>
+							Set: ${this.series.options.set[this.point.index]}`);
+				}
+			},
+			legend: {
+				enabled: false
+			},
+			series: [{
+				name: 'Placement',
+				color: '#404040',
+				data: [...playerTournamentData],
+				set : [...playerTournamentSets]
+			}]
+
+		});
+
+		Highcharts.chart('setBreakdown', {
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'column',
+				backgroundColor: '#f5f5f5',
+			},
+			title: {
+				text: 'Tournament Breakdown'
+			},
+			xAxis: {
+				title: {
+					text: 'Draft'
+				},
+				categories : [...this.playerTournamentSets],
+				labels: {
+					formatter : function(){
+						return this.value;
+					}
+				}
+			},
+			yAxis: {
+				title: {
+					text: 'Match Count'
+				},
+				labels: {
+					formatter : function(){
+						return this.value;
+					}
+				}
+			},
+			legend: {
+				enabled: true
+			},
+			credits : false,
+			series: [
+				{
+					name : "Wins",
+					color : "#404040",
+					data : this.tbSeries.wins
+				},
+				{
+					name : "Losses",
+					color : "#909090",
+					data : this.tbSeries.losses
+				},
+				{
+					name : "Draws",
+					color : "#D3D3D3",
+					data : this.tbSeries.draws
+				}
+			]
+			
+		});
 	}
 
 	updatePlayerData(){
@@ -338,17 +481,52 @@ export class PlayerHistoryComponent implements OnInit{
 		});
 
 		// Color Data
-		let colorFrequency = {blue : 0, red : 0, white : 0, black : 0, green : 0};
-		
 		const tournaments = this.selectedPlayer.tournamentHistory;
+		const colorFrequency = {blue : 0, red : 0, white : 0, black : 0, green : 0};
+		const winPercentageByColor = {blue : 0, red : 0, white : 0, black : 0, green : 0};
+		const cumulativeWinsByColor = {
+			blue : {winCount : 0, matchCount : 0},
+			red : {winCount : 0, matchCount : 0},
+			white : {winCount : 0, matchCount : 0},
+			black : {winCount : 0, matchCount : 0},
+			green : {winCount : 0, matchCount : 0}
+		};
 
+		// Calc the total number of matches and wins for each color
 		for(let tournament of tournaments){
+			//const colorCount = tournament.colors.length;
+			console.log('T',tournament);
 			for(let color in tournament.colors){
+				const c = tournament.colors[color];
+				console.log('C',c);
+
+				cumulativeWinsByColor[c].winCount += tournament.wins + tournament.byes;
+				cumulativeWinsByColor[c].matchCount += tournament.wins + tournament.byes + tournament.losses;
+
+				// Frequency chart data
 				colorFrequency[tournament.colors[color]] ++;
 			}
+			this.overallRecord.wins += tournament.wins + tournament.byes;
+			this.overallRecord.losses += tournament.losses;
+			this.overallRecord.draws += tournament.draws;
+		}
+
+		// For each color, set the win percent
+		for(let c in winPercentageByColor){
+			winPercentageByColor[c] = cumulativeWinsByColor[c].winPercentage = (cumulativeWinsByColor[c].winCount / cumulativeWinsByColor[c].matchCount) || 0;
 		}
 
 		this.colorAffiliation = colorFrequency;
+		this.winPercentageByColor = winPercentageByColor;
+
+
+		// Tournament data for Tournament Breakdown Chart
+		this.tbSeries = {wins : [], losses : [], draws : []};
+		tournaments.forEach((t)=>{
+			this.tbSeries.wins.push(t.wins);
+			this.tbSeries.losses.push(t.losses);
+			this.tbSeries.draws.push(t.draws);
+		});
 
 	}
 

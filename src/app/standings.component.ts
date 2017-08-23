@@ -1,15 +1,15 @@
 import { Component, OnInit } from "@angular/core";
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import {Router} from '@angular/router';
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
+import { Router } from "@angular/router";
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/map";
+import { AngularFire, FirebaseListObservable } from "angularfire2";
 import suffix from "../utility/placementSuffix";
 
 @Component({
-	template : `
+  template: `
 		<div class="page_wrapper">
 			<div class="page_title_container">
 				<h2>Overall Standings</h2>
@@ -55,8 +55,9 @@ import suffix from "../utility/placementSuffix";
 			</div>
 		</div>
 	`,
-	selector : "standings-component",
-	styles : [`
+  selector: "standings-component",
+  styles: [
+    `
 		.profile_image{
 			max-width:70px;
 			width:70px;
@@ -121,32 +122,33 @@ import suffix from "../utility/placementSuffix";
 		}
 		
 		
-	`]
+	`
+  ]
 })
+export class StandingsComponent {
+  playerList = [];
+  allPlayers: FirebaseListObservable<any>;
+  parentRouter;
+  constructor(af: AngularFire, router: Router) {
+    this.parentRouter = router;
+    this.allPlayers = af.database.list("/players");
+  }
 
-export class StandingsComponent{
-	playerList = [];
-	allPlayers : FirebaseListObservable<any>;
-	parentRouter;
-	constructor(af: AngularFire, router : Router) {
-		this.parentRouter = router;
-	  	this.allPlayers = af.database.list('/players');
-	}
-
-	ngOnInit(){
-			this.allPlayers.subscribe(players => {
-		  		this.playerList = players.sort((a,b)=>{
-					  return (a.powerRanking - b.powerRanking);
-				  });
-		  			  
-		  	});
-	}
-	playerSelected(firstName : string, lastName? : string){
-		if(lastName){
-			this.parentRouter.navigateByUrl('/player/' + firstName.toLowerCase() + "-" + lastName.toLowerCase());
-		}else{
-			this.parentRouter.navigateByUrl('/player/' + firstName.toLowerCase());
-		}
-		
-	}
+  ngOnInit() {
+    this.allPlayers.subscribe(players => {
+      this.playerList = players.sort((a, b) => {
+        return a.powerRanking - b.powerRanking;
+      });
+    });
+  }
+  playerSelected(firstName: string, lastName?: string) {
+    if (lastName) {
+      this.parentRouter.navigateByUrl(
+        "/player/" + firstName.toLowerCase() + "-" + lastName.toLowerCase()
+      );
+    } else {
+      this.parentRouter.navigateByUrl("/player/" + firstName.toLowerCase());
+    }
+	
+  }
 }

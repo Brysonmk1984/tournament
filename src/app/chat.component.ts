@@ -31,6 +31,7 @@ import { AuthService } from '../auth/auth.service';
                             <textarea formControlName="message" id="inputText" placeholder="Enter a message to the group." autofocus></textarea>
                             <br />
                             <input type="submit" class="btn btn-primary btn-block pointer" value="submit" [disabled]="!sendMessageForm.valid"  />
+                            <input *ngIf="user.isAdmin" type="button" class="btn  btn-block pointer" value="Delete Last Message" (click)="deleteMessage()"  />
                         </div>
                     </form>
                 </div>
@@ -134,14 +135,21 @@ export class ChatComponent{
             this.playersArray = players;
             this.messageMatch();
         });
+
         
     }
 
     ngAfterViewInit(){
         this.chatService.get().subscribe(results =>{
-            
-            this.messages = results.messages.sort((a,b) =>{
+            console.log('RESULTS!', results);
+            const sorted = results.messages.sort((a,b) =>{
                 return (a.id-b.id);
+            });
+
+            this.messages = sorted.map((m)=>{
+                const decodedMessage = decodeURIComponent(m.message);
+                m.message = decodedMessage;
+                return m;
             });
             this.messageMatch();
             
@@ -167,11 +175,17 @@ export class ChatComponent{
         /* If existing player (Bryson has added their email to their user info in firebase) */
         if(matchingPlayer){
             let fullName = matchingPlayer.firstName + " " + matchingPlayer.lastName;
-            this.chatService.post(matchingPlayer.id, fullName, form.value.message)
+            let encodedMessage = encodeURIComponent(form.value.message.replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+'));
+            console.log('asd',encodedMessage);
+            this.chatService.post(matchingPlayer.id, fullName, encodedMessage)
             .subscribe(results =>{
-                this.messages = results.messages;
+                this.messages = results.messages.map((m)=>{
+                    const decodedMessage = decodeURIComponent(m.message);
+                    m.message = decodedMessage;
+                    return m;
+                });
                 this.messageMatch();
-                setTimeout(function(){
+                setTimeout(()=>{
                     this.chatBox.scrollTop = this.chatBox.scrollHeight;
                 },100)
                
@@ -204,6 +218,18 @@ export class ChatComponent{
         }
         
             
+    }
+
+    deleteMessage(){
+        const sortedMessages = this.messages.sort((a,b)=>{ return (a.id - b.id);});
+        const lastMessageId = sortedMessages[sortedMessages.length -1].id;
+        
+        this.chatService.del(lastMessageId)
+        .subscribe(results =>{
+            this.messages = results.messages;
+            console.log('results',results);
+        });
+        
     }
     
 }
