@@ -68,18 +68,18 @@ Highcharts.setOptions({
 							<th>Date</th>
 							<th>Set</th>
 							<th>Colors</th>
-							<th class="text-right">Placement</th>
-							<th class="text-right">Score</th>
-							<th class="text-right">Wins</th>
-							<th class="text-right">Losses</th>
-							<th class="text-right">Draws</th>
-							<th class="text-right">Byes</th>
+							<th class="text-right">P<span class="hide_small_screen">lacement</span></th>
+							<th class="text-right">S<span class="hide_small_screen">core</span></th>
+							<th class="text-right">W<span class="hide_small_screen">ins</span></th>
+							<th class="text-right">L<span class="hide_small_screen">osses</span></th>
+							<th class="text-right">D<span class="hide_small_screen">raws</span></th>
+							<th class="text-right">B<span class="hide_small_screen">yes</span></th>
 						</tr>
 						<tr *ngFor="let item of selectedPlayer.tournamentHistory | keys">
 							<td>{{item.value.date | date}}</td>
 							<td>{{item.value.set}}</td>
 							<td>
-								{{item.value.colors}}
+								<span *ngFor="let color of item.value.colors; let isLast=last">{{color}}<br /></span>
 							</td>
 							<td class="text-right">{{item.value.place | suffix }}</td>
 							<td class="text-right">{{item.value.score}}</td>
@@ -98,7 +98,7 @@ Highcharts.setOptions({
 			cursor : pointer;
 			margin-right:20px;
 		}
-
+		
 		.details_group{
 			vertical-align:top;
 			width:70%;
@@ -145,6 +145,9 @@ Highcharts.setOptions({
 				text-align:center;
 				width:100%;
 				margin-bottom:10px;
+			}
+			.hide_small_screen{
+				display:none;
 			}
 			
 		}

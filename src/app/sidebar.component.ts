@@ -1,45 +1,46 @@
 import { Component } from '@angular/core';
+import { RouterLinkActive } from '@angular/router';
 
 @Component({
 	template : `
 		<div id="sideBar">
-			<a routerLink="/sign-in">
+			<a routerLink="/sign-in" routerLinkActive="active-link">
 				<span class="link_container">
 					<span class="icon_container"><i class="fa fa-user" aria-hidden="true"></i></span>
 					<span class="nav_text">Sign In</span>
 				</span>
 			</a>
-			<a routerLink="/standings">
+			<a routerLink="/standings" routerLinkActive="active-link">
 				<span class="link_container">
 					<span class="icon_container"><i class="fa fa-list-ol" aria-hidden="true"></i></span>
 					<span class="nav_text">Standings</span>
 				</span>
 			</a>
-			<a routerLink="/player">
-				<span class="link_container">
-					<span class="icon_container"><i class="fa fa-drivers-license-o" aria-hidden="true"></i></span>
-					<span class="nav_text">Player Details</span>
-				</span>
-			</a>
-			<a routerLink="/add">
-				<span class="link_container">
-					<span class="icon_container"><i class="fa fa-trophy" aria-hidden="true"></i></span>
-					<span class="nav_text">New Tournament</span>
-				</span>
-			</a>
-			<a routerLink="/stats">
+			<a routerLink="/stats" routerLinkActive="active-link">
 				<span class="link_container">
 					<span class="icon_container"><i class="fa fa-bar-chart" aria-hidden="true"></i></span>
 					<span class="nav_text">Statistics</span>
 				</span>
 			</a>
-			<a routerLink="/chat">
+			<a routerLink="/player" routerLinkActive="active-link">
+				<span class="link_container">
+					<span class="icon_container"><i class="fa fa-drivers-license-o" aria-hidden="true"></i></span>
+					<span class="nav_text">Player Details</span>
+				</span>
+			</a>
+			<a routerLink="/add" routerLinkActive="active-link">
+				<span class="link_container">
+					<span class="icon_container"><i class="fa fa-trophy" aria-hidden="true"></i></span>
+					<span class="nav_text">New Tournament</span>
+				</span>
+			</a>
+			<a routerLink="/chat" routerLinkActive="active-link">
 				<span class="link_container">
 					<span class="icon_container"><i class="fa fa-comments-o" aria-hidden="true"></i></span>
 					<span class="nav_text">Chat Wall</span>
 				</span>
 			</a>
-			<a routerLink="/rules">
+			<a routerLink="/rules" routerLinkActive="active-link">
 				<span class="link_container">
 					<span class="icon_container"><i class="fa fa-file-text-o " aria-hidden="true"></i></span>
 					<span class="nav_text">Rules</span>
@@ -60,19 +61,20 @@ import { Component } from '@angular/core';
 			text-align:center;
 			box-shadow:-1px 0px 2px;
 			z-index:10000;
-			-webkit-transition-property: width; /* Safari */
-    		-webkit-transition-duration: 2s; /* Safari */
+			-webkit-transition-property: width;
+    		-webkit-transition-duration: 2s;
     		transition-property: width;
     		transition-duration: .3s;
 		}
 		#sideBar .link_container{
-			height:69px;
+			height:45px;
 			display:block;
 			text-align:left;
 			padding-left:5px;
 			font-size:.9rem;
 			border-bottom:solid 1px #740616;
 			white-space:nowrap;
+			line-height:45px;
 		}
 		#sideBar .link_container:hover{
 			color:white;
@@ -83,17 +85,28 @@ import { Component } from '@angular/core';
 		#sideBar .link_container:hover .icon_container{
 			border-color:white;
 		}
+
+		#sideBar .active-link .link_container{
+			color:#ffffff;
+		}
+		#sideBar .active-link .link_container i{
+			color:#ffffff;
+		}
+		#sideBar .active-link .link_container .icon_container{
+			border-color:#ffffff;
+		}
+
+
 		#sideBar .icon_container{
 			color:#740616;
 			display:inline-block;
-			margin-bottom:20px;
+			
 			border: solid 2px #740616;
 			text-align:center;
 			border-radius:50%;
 			width:28px;
 			height:28px;
 			line-height:25px;
-			margin-top:20px;
 			cursor:pointer;
 		}
 		#sideBar .nav_text{
@@ -108,6 +121,11 @@ import { Component } from '@angular/core';
 		#sideBar a{
 			text-decoration:none;
 			color:#740616;
+		}
+		@media(max-width : 739px){
+			#sideBar{
+				display:none;
+			}
 		}
 	`]
 })
