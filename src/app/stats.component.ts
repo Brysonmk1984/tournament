@@ -27,30 +27,48 @@ Highcharts.setOptions({
 			</div>
             <hr />
         
-            <div id="playerContainer">
-                <!-- Match Totals -->
-                <ul  id="detailsList1" class="details_list list-group inline_block">
-                    <li class="list-group-item"><strong>Total Tournaments :&nbsp;</strong><span>{{totals.tournaments}}</span></li>
-                    <li class="list-group-item"><strong>Total Wins :&nbsp;</strong><span>{{totals.wins}}</span></li>
-                    <li class="list-group-item"><strong>Total Losses :&nbsp;</strong><span>{{totals.losses}}</span></li>
-                    <li class="list-group-item"><strong>Total Draws :&nbsp;</strong><span>{{totals.draws}}</span></li>
-                </ul>
-                
-                <br /><br />
-                <h3>Overall:</h3>
-                <div id="chartContainer">
-                    <div id="primaryCharts">
-                        <div id="totalDraftColors" class="chart"></div>
-                        <div id="championshipTitlesWon" class="chart"></div>
-                    </div>
-                </div>
-                <h3>By Set:</h3>
-                <div id="chartContainer2">
-                    <div id="secondaryCharts">
-                        <div id="draft{{i}}" class="chart" *ngFor="let set of totals.tDetails; let i = index;">set {{set.set}}</div>
-                    </div>
-                    </div>
-                </div>
+			<div id="playerContainer">
+                <div>
+					<h3>Overall:</h3>
+					<div id="chartContainer">
+						<div id="primaryCharts">
+							<div id="totalDraftColors" class="chart"></div>
+							<div id="championshipTitlesWon" class="chart"></div>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<div>
+					<h3>By Set:</h3>
+					<div id="chartContainer2">
+						<div id="secondaryCharts">
+							<div id="draft{{i}}" class="chart" *ngFor="let set of totals.tDetails; let i = index;">set {{set.set}}</div>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<div *ngFor="let t of tournamentList">
+					<h3 class="inline_block">{{t.tournamentDetails.set}}</h3>
+					<em class="subheader muted">&nbsp;-&nbsp;{{t.tournamentDetails.date | date}}</em>
+					<table class="table table-list table-striped">
+						<th>Rank</th>
+						<th>Player</th>
+						<th>Color</th>
+						<th class="text-right">Wins</th>
+						<th class="text-right">Losses</th>
+						<th class="text-right">Draws</th>
+						<tr *ngFor="let p of t.playerFormsArray;">
+							<td>{{p.rank | suffix}}</td>
+							<td>{{p.playerNameInfo.firstName}} {{p.playerNameInfo.lastName}}</td>
+							<td><span *ngFor="let c of p.colors | keys">{{c.value ? (c.key + " ") : ""}}</span></td>
+							<td class="text-right">{{p.wins}}</td>
+							<td class="text-right">{{p.losses}}</td>
+							<td class="text-right">{{p.draws}}</td>
+						</tr>
+					</table>
+					<hr />
+				</div>
+			</div>
         </div>
 	`,
 	styles : [`
@@ -81,7 +99,9 @@ Highcharts.setOptions({
 			border-radius:8px;
 			margin:20px;
         }
-		
+		.inline_block{
+			display:inline-block;
+		}
 		
 		@media(max-width : 900px){
      
@@ -145,7 +165,7 @@ export class StatsComponent implements OnInit{
         });
 
         this.allTournaments.subscribe(tournaments => {
-            this.tournamentList = tournaments;
+            this.tournamentList = tournaments.reverse();
             console.log('TS',this.tournamentList);
             this.calcTotalsFromTournaments();
            
@@ -237,7 +257,6 @@ export class StatsComponent implements OnInit{
                 labels : {
                     useHTML : true,
                     formatter : function(){
-                        console.log('TET',this);
                         var elem = `<div style="text-align:center"><img width="50" height="50" src="${this.value.photoUrl}" /><br /><strong>${this.value.name}</strong></div>`;
                         return elem; 
                     }
@@ -264,7 +283,6 @@ export class StatsComponent implements OnInit{
             }
             
         });
-        console.log('totals', this.totals.champions);
     }
     calcTotalsFromTournaments(){
         this.totals.tournaments = this.tournamentList.length;
@@ -273,7 +291,6 @@ export class StatsComponent implements OnInit{
             const tObj = {set : tName,red:0,blue:0,green:0,black:0,white:0};
             this.totals.tDetails.push(tObj);
             tournament.playerFormsArray.forEach((playerTDetails)=>{
-                console.log(playerTDetails);
                 for(let color in playerTDetails.colors){
                     
                     if(playerTDetails.colors[color]){
@@ -289,13 +306,12 @@ export class StatsComponent implements OnInit{
             },100)
             
         });
-        console.log('tdetails',this.totals.tDetails);
         
     }
     makeDynamicCharts(t,i){
-        console.log('TTT',t);
+
         const chartName = `draft${i}`;
-        console.log(chartName);
+
         // CHART - Total Draft Colors
 		Highcharts.chart(chartName, {
 			chart: {

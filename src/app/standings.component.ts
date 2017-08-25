@@ -37,11 +37,11 @@ import suffix from "../utility/placementSuffix";
 						<td (click)="playerSelected(player.firstName, player.lastName)" class="">
 							<img [ngClass]="{ranked_first : player.wonLastTournament === true}" class="profile_image img-thumbnail" src="{{player.photoUrl}}" />
 							<div class="large_screen_hide">
-								<span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span>
+								<span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.png" title="{{player.firstName}} Won the Last Tournament" /></span>
 							</div>
 						</td>
 						<td class="small_screen_hide" (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
-						<td class="small_screen_hide"><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.jpg" title="{{player.firstName}} Won the Last Tournament" /></span></td>
+						<td class="small_screen_hide"><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.png" title="{{player.firstName}} Won the Last Tournament" /></span></td>
 						<td class="text-right primary_column"><span class="large_text">{{player.powerRanking | suffix}}</span> <em class="text-muted small">({{player.powerScore}})</em></td>
 						<td class="text-right"><span class="large_text">{{player.overallRanking | suffix}}</span> <em class="text-muted small">({{player.overallScore}})</em></td>
 						
