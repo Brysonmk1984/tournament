@@ -354,7 +354,8 @@ export class PlayerHistoryComponent implements OnInit{
 				}]
 			}]
 		});
-		
+		console.log('PTD', playerTournamentData);
+		// CHART - Placement Over Time
 		Highcharts.chart('placementOverTime', {
 			chart : {
 				backgroundColor: '#f5f5f5'
@@ -405,6 +406,7 @@ export class PlayerHistoryComponent implements OnInit{
 
 		});
 
+		// CHART - Tournamnet Breakdown
 		Highcharts.chart('setBreakdown', {
 			chart: {
 				plotBackgroundColor: null,
@@ -475,6 +477,7 @@ export class PlayerHistoryComponent implements OnInit{
 		});
 
 		this.playerTournamentData = tournamentDate.map((date, index) => {
+			
 			return [date, tournamentPlacement[index]];
 		});
 
@@ -499,19 +502,21 @@ export class PlayerHistoryComponent implements OnInit{
 		for(let tournament of tournaments){
 			//const colorCount = tournament.colors.length;
 			console.log('T',tournament);
-			for(let color in tournament.colors){
-				const c = tournament.colors[color];
-				console.log('C',c);
+			if(typeof tournament !== "undefined"){
+				for(let color in tournament.colors){
+					const c = tournament.colors[color];
+					console.log('C',c);
 
-				cumulativeWinsByColor[c].winCount += tournament.wins + tournament.byes;
-				cumulativeWinsByColor[c].matchCount += tournament.wins + tournament.byes + tournament.losses;
+					cumulativeWinsByColor[c].winCount += tournament.wins + tournament.byes;
+					cumulativeWinsByColor[c].matchCount += tournament.wins + tournament.byes + tournament.losses;
 
-				// Frequency chart data
-				colorFrequency[tournament.colors[color]] ++;
+					// Frequency chart data
+					colorFrequency[tournament.colors[color]] ++;
+				}
+				this.overallRecord.wins += tournament.wins + tournament.byes;
+				this.overallRecord.losses += tournament.losses;
+				this.overallRecord.draws += tournament.draws;
 			}
-			this.overallRecord.wins += tournament.wins + tournament.byes;
-			this.overallRecord.losses += tournament.losses;
-			this.overallRecord.draws += tournament.draws;
 		}
 
 		// For each color, set the win percent
@@ -531,6 +536,12 @@ export class PlayerHistoryComponent implements OnInit{
 			this.tbSeries.draws.push(t.draws);
 		});
 
+		// Firebase includes undefined in arrays, so need this to prevent charts from breaking
+		this.playerTournamentData = this.playerTournamentData.filter((t)=>{
+			if(typeof t !== undefined){
+				return t;
+			}
+		});
 	}
 
 	playerChange(firstName, lastName){
