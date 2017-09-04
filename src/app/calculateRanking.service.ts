@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
-import { FirebaseRef } from 'angularfire2';
+// DO we need this?
+import { FirebaseApp } from 'angularfire2';
 import { PlayerTournament, Player, PlayerNameInfo, Colors, PlayerForm, TournamentDetails, Tournament } from './interface';
 
 enum Weight{
@@ -16,7 +17,7 @@ export class CalculateRanking {
 	playerList : Player[];
 	tournamentList : any[] = [];
 	weight = Weight;
-	constructor(@Inject(FirebaseRef) ref){
+	constructor(@Inject(FirebaseApp) ref){
 		this.root = ref.database();
 	}
 	//constructor(p,t){this.playerList = p;this.tournamentList = t;}

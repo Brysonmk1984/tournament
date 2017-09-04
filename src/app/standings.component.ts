@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
-import { AngularFire, FirebaseListObservable } from "angularfire2";
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import suffix from "../utility/placementSuffix";
 
 @Component({
@@ -129,9 +129,9 @@ export class StandingsComponent {
   playerList = [];
   allPlayers: FirebaseListObservable<any>;
   parentRouter;
-  constructor(af: AngularFire, router: Router) {
+  constructor(afdb: AngularFireDatabase, router: Router) {
     this.parentRouter = router;
-    this.allPlayers = af.database.list("/players");
+    this.allPlayers = afdb.list("/players");
   }
 
   ngOnInit() {

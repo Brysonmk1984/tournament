@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CommonModule } from '@angular/common';
-import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -13,19 +13,19 @@ export class AuthService {
         uid : ""
     };
 
-    constructor( private af : AngularFire){ }
+    constructor(private afauth : AngularFireAuth /*private af : AngularFire*/){ }
 
 
     
 
     watch(){
         return Observable.create(observer => { 
-            this.af.auth.subscribe((user)=>{
-                if(user && user.auth){
+            this.afauth.authState.subscribe((user)=>{
+                if(user){
                     this.userDetails.signedIn = true;
-                    this.userDetails.isAdmin = user.auth.email === "brysonmk1984@gmail.com" ? true : false;
-                    this.userDetails.email = user.auth.email;
-                    this.userDetails.uid = user.auth.uid;
+                    this.userDetails.isAdmin = user.email === "brysonmk1984@gmail.com" ? true : false;
+                    this.userDetails.email = user.email;
+                    this.userDetails.uid = user.uid;
                 }else{
                     this.userDetails.signedIn = false;
                     this.userDetails.isAdmin = false;
@@ -41,10 +41,10 @@ export class AuthService {
 
     signIn(form){
         return Observable.create(observer => { 
-            this.af.auth.login(
-                {email : form.value.email, password: form.value.password},
-                {provider: AuthProviders.Password, method: AuthMethods.Password,
-            })
+            this.afauth.auth.signInWithEmailAndPassword(
+                form.value.email, form.value.password
+                /*{provider: AuthProviders.Password, method: AuthMethods.Password,*/
+            )
             .then( success =>{
                     console.log('success', success);
                     observer.next(success);
@@ -59,10 +59,10 @@ export class AuthService {
     createAccount(form){
         console.log(form.email, form.password);
         return Observable.create(observer =>{
-            this.af.auth.createUser({
-                email : form.email,
-                password : form.password
-            }).then( success =>{
+            this.afauth.auth.createUserWithEmailAndPassword(
+                form.email,
+                form.password
+            ).then( success =>{
                     //console.log('success', success);
                     this.userDetails.signedIn = true;
                     this.userDetails.isAdmin = success.auth.email === "brysonmk1984@gmail.com" ? true : false;
@@ -79,7 +79,7 @@ export class AuthService {
     }
 
     signOut(){
-         this.af.auth.logout();
+         this.afauth.auth.signOut();
          this.userDetails = {
             signedIn : false,
             isAdmin : false,

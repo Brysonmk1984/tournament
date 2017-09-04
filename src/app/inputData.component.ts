@@ -4,7 +4,10 @@ import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {AngularFire, FirebaseListObservable, FirebaseRef} from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+// Don't think this is actually needed. used in place of FirebaseRef, which I don't even think was being used on this page
+import { FirebaseApp } from 'angularfire2';
+
 import { environment } from "../environments/environment";
 
 import { CalculateRanking } from "./calculateRanking.service";
@@ -81,9 +84,9 @@ export class InputDataComponent implements OnInit{
 	root : any;
 	user : User;
 
-	constructor( private fb: FormBuilder, af :  AngularFire, @Inject(FirebaseRef) ref, private calculateRanking : CalculateRanking, private authService : AuthService){
-		this.tournaments$ = af.database.list('/tournaments');
-		this.players$ = af.database.list('/players');
+	constructor( private fb: FormBuilder, afdb :  AngularFireDatabase, @Inject(FirebaseApp) ref, private calculateRanking : CalculateRanking, private authService : AuthService){
+		this.tournaments$ = afdb.list('/tournaments');
+		this.players$ = afdb.list('/players');
 		this.root = ref.database();
 	}
 
@@ -120,14 +123,6 @@ export class InputDataComponent implements OnInit{
 
 
 	onSubmit({ value  , valid } ){
-		// No longer needed since Firebase Auth is working
-		/*if(environment.production){
-			let result = prompt('Password Pls');
-				if(result !== "graphic5"){return;}
-		}*/
-
-		
-	
 
 		console.log('submitted form data', value["tournamentDetails"]);
 

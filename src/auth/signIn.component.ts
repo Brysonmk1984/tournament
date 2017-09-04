@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
-
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AuthService } from './auth.service';
 @Component({
     moduleId: module.id,
@@ -99,7 +98,7 @@ export class SignInComponent implements OnInit {
     logIn = {
         error : ""
     };
-    constructor( private fb: FormBuilder, private af : AngularFire, private authService : AuthService) { }
+    constructor( private fb: FormBuilder, /*private af : AngularFire,*/ private authService : AuthService) { }
 
     ngOnInit(){
        this.signUpForm = this.fb.group({

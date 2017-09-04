@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from '@angular/router';
-//import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import {Location} from '@angular/common';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import Highcharts from 'highcharts';
 import suffix from "../utility/placementSuffix";
@@ -151,9 +150,9 @@ export class StatsComponent implements OnInit{
         champions :[]
     };
 
-	constructor(private route: ActivatedRoute, af: AngularFire, location: Location) {
-        this.allPlayers = af.database.list('/players');
-        this.allTournaments = af.database.list('/tournaments');
+	constructor(private route: ActivatedRoute, afdb: AngularFireDatabase, location: Location) {
+        this.allPlayers = afdb.list('/players');
+        this.allTournaments = afdb.list('/tournaments');
  		this.location = location;
 	}
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { AngularFire, FirebaseListObservable, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { AuthService } from './auth.service';
 
@@ -124,7 +124,7 @@ export class CreateAccountComponent implements OnInit{
     };
 
 
-    constructor( private fb: FormBuilder, private af : AngularFire, private authService : AuthService) { 
+    constructor( private fb: FormBuilder, private authService : AuthService) { 
 
     }
 

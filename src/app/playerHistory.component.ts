@@ -6,7 +6,7 @@ import {Location} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import Highcharts from 'highcharts';
 import suffix from "../utility/placementSuffix";
@@ -175,8 +175,8 @@ export class PlayerHistoryComponent implements OnInit{
 
 	location;
 
-	constructor(private route: ActivatedRoute, af: AngularFire, location: Location) {
- 		this.allPlayers = af.database.list('/players');
+	constructor(private route: ActivatedRoute, afdb: AngularFireDatabase, location: Location) {
+ 		this.allPlayers = afdb.list('/players');
  		this.location = location;
 	}
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChatMessageSubComponent } from './chatMessageSubComponent.component';
 import { ChatService } from './chat.service';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { AuthService } from '../auth/auth.service';
 
@@ -110,9 +110,9 @@ export class ChatComponent{
         uid : ""
     };
 
-    constructor(private chatService : ChatService, af : AngularFire,  private fb: FormBuilder, private authService : AuthService){
+    constructor(private chatService : ChatService, afdb : AngularFireDatabase,  private fb: FormBuilder, private authService : AuthService){
         this.chatService = chatService;
-        this.allPlayersObs = af.database.list('/players');
+        this.allPlayersObs = afdb.list('/players');
     }
 
     ngOnInit(){
