@@ -42,7 +42,7 @@ import suffix from "../utility/placementSuffix";
 						</td>
 						<td class="small_screen_hide" (click)="playerSelected(player.firstName, player.lastName)"><div class="player_names">{{player.firstName}} {{player.lastName}}<br /><em class="text-muted">{{player.nickName}}</em></div></td>
 						<td class="small_screen_hide"><span class="belt_row" [ngClass]="{has_belt : player.wonLastTournament === true}" ><img src="http://www.brysonkruk.com/tournament/images/belt.png" title="{{player.firstName}} Won the Last Tournament" /></span></td>
-						<td class="text-right primary_column"><span class="large_text">{{player.powerRanking | suffix}}</span> <em class="text-muted small">({{player.powerScore}})</em></td>
+						<td class="text-right primary_column"><span class="large_text">{{player.powerRanking | suffix}}</span> <em class="text-muted small">({{ player.powerScore | round}})</em></td>
 						<td class="text-right"><span class="large_text">{{player.overallRanking | suffix}}</span> <em class="text-muted small">({{player.overallScore}})</em></td>
 						
 						<td class="text-right small_screen_hide">{{player.firstPlaces}}</td>

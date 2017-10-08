@@ -28,6 +28,7 @@ import { ChatMessageSubComponent } from './chatMessageSubComponent.component';
 import { FooterComponent } from './footer.component';
 import { KeysPipe } from './keys.pipe';
 import { SuffixPipe } from './placementSuffix.pipe';
+import { RoundPipe } from './round.pipe';
 import { ChatService } from './chat.service';
 import { environment } from "../environments/environment";
 
@@ -80,7 +81,8 @@ export const ROUTES: Routes = [
     ChatMessageSubComponent,
     FooterComponent,
     KeysPipe,
-    SuffixPipe
+    SuffixPipe,
+    RoundPipe
   ],
   imports: [
     BrowserModule,
