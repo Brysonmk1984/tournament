@@ -12,7 +12,7 @@ export class AuthService {
         email : "",
         uid : ""
     };
-
+op
     constructor(private afauth : AngularFireAuth /*private af : AngularFire*/){ }
 
 
@@ -23,7 +23,7 @@ export class AuthService {
             this.afauth.authState.subscribe((user)=>{
                 if(user){
                     this.userDetails.signedIn = true;
-                    this.userDetails.isAdmin = user.email === "brysonmk1984@gmail.com" ? true : false;
+                    this.userDetails.isAdmin = (user.email === "brysonmk1984@gmail.com" || user.email === "rdunn32@gmail.com ") ? true : false;
                     this.userDetails.email = user.email;
                     this.userDetails.uid = user.uid;
                 }else{

@@ -96,6 +96,7 @@ export class InputDataComponent implements OnInit{
 		.subscribe((user : User) : void =>{
 			
 			this.user = user;
+			console.log('USER', this.user);
 		});
 
 		this.tournament  = this.fb.group({
