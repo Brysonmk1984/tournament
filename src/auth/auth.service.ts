@@ -21,6 +21,7 @@ op
     watch(){
         return Observable.create(observer => { 
             this.afauth.authState.subscribe((user)=>{
+                console.log('user', user);
                 if(user){
                     this.userDetails.signedIn = true;
                     this.userDetails.isAdmin = (user.email === "brysonmk1984@gmail.com" || user.email === "rdunn32@gmail.com ") ? true : false;

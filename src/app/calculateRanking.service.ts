@@ -61,13 +61,24 @@ export class CalculateRanking {
 	private determineOverallScore() : Player[]{
 		let playerList : any = this.playerList.forEach((player : Player)=>{
 			player.overallScore = 0;
+			
+			// Needed because quirk with firebase and new player tournaments being added as objects instead of arrays
+			if(typeof player.tournamentHistory.length === 'undefined'){
+				console.log('Firebase obj instead of array', player);
+				const arr = [];
+				for(let t in player.tournamentHistory){
+					arr.push(player.tournamentHistory[t]);
+				}
+				player.tournamentHistory = arr;
+				// After this DB update, the player data should be an array all the time
+				this.updateDbPlayerValue(player.id,"tournamentHistory", player.tournamentHistory);
+			}
 			// If the player participated in a tournament
-			if(player.tournamentHistory){
+			if(player.tournamentHistory.length){
 				player.tournamentHistory.forEach((tournament) =>{
 					player.overallScore += tournament.score;
 				});
 			}
-			//console.log(player.firstName, player.overallScore);
 			this.updateDbPlayerValue(player.id,"overallScore",player.overallScore);
 		});
 		return this.playerList;

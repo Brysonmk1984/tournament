@@ -465,14 +465,15 @@ export class PlayerHistoryComponent implements OnInit{
 	}
 
 	updatePlayerData(){
+		const tHistory = this.selectedPlayer.tournamentHistory.filter((t)=>{
+			return typeof t !== 'undefined';
+		});
 		// Tournament Data
-		const tournamentDate = this.selectedPlayer.tournamentHistory.map((tournament) =>{
-			console.log('T',tournament);
+		const tournamentDate = tHistory.map((tournament) =>{
 			return Date.parse(tournament.date);
 		});
 
-		const tournamentPlacement = this.selectedPlayer.tournamentHistory.map((tournament) =>{
-			console.log('T',tournament);
+		const tournamentPlacement = tHistory.map((tournament) =>{
 			return tournament.place;
 		});
 
@@ -482,7 +483,7 @@ export class PlayerHistoryComponent implements OnInit{
 		});
 
 		// Set Data
-		this.playerTournamentSets = this.selectedPlayer.tournamentHistory.map((tournament) =>{
+		this.playerTournamentSets = tHistory.map((tournament) =>{
 			return tournament.set;
 		});
 

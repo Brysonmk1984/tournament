@@ -99,7 +99,7 @@ export class ChatComponent{
     messages = [];
     playersArray = [];
     allPlayersObs : FirebaseListObservable<any>;
-    isLoading = true;
+    isLoading = false;
     sendMessageForm : FormGroup;
     chatBox;
     messageMatchCounter : number = 0;

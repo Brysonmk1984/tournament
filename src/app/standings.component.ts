@@ -7,7 +7,7 @@ import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import suffix from "../utility/placementSuffix";
-
+import { ChatService } from './chat.service';
 @Component({
   template: `
 		<div class="page_wrapper">
@@ -129,9 +129,10 @@ export class StandingsComponent {
   playerList = [];
   allPlayers: FirebaseListObservable<any>;
   parentRouter;
-  constructor(afdb: AngularFireDatabase, router: Router) {
+  constructor(afdb: AngularFireDatabase, router: Router, private chatService : ChatService) {
     this.parentRouter = router;
-    this.allPlayers = afdb.list("/players");
+		this.allPlayers = afdb.list("/players");
+		this.chatService = chatService;
   }
 
   ngOnInit() {
@@ -139,7 +140,9 @@ export class StandingsComponent {
       this.playerList = players.sort((a, b) => {
         return a.powerRanking - b.powerRanking;
       });
-    });
+		});
+		//only here to initiate heroku server
+		this.chatService.get();
   }
   playerSelected(firstName: string, lastName?: string) {
     if (lastName) {
