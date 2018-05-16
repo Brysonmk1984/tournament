@@ -108,7 +108,6 @@ export class SignInComponent implements OnInit {
 
     this.authService.watch()
     .subscribe(user =>{
-        console.log('USER',user);
         this.user = user;
     });
 

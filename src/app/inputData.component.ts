@@ -83,7 +83,7 @@ export class InputDataComponent implements OnInit{
 	tournamentList : Tournament[] = [];
 	root : any;
 	user : User;
-
+	updateError = {value:false, message:""};
 	constructor( private fb: FormBuilder, afdb :  AngularFireDatabase, @Inject(FirebaseApp) ref, private calculateRanking : CalculateRanking, private authService : AuthService){
 		this.tournaments$ = afdb.list('/tournaments');
 		this.players$ = afdb.list('/players');
@@ -124,15 +124,14 @@ export class InputDataComponent implements OnInit{
 
 
 	onSubmit({ value  , valid } ){
-
-		console.log('submitted form data', value["tournamentDetails"]);
-
+		
+		console.log('submitted tournament data', value["tournamentDetails"]);
 			
-			if(this.tournamentList.length > 0){
-				value.tournamentDetails.id = this.calcTournamentId(this.tournamentList);
-			}else{
-				value.tournamentDetails.id = 0;
-			}
+		if(this.tournamentList.length > 0){
+			value.tournamentDetails.id = this.calcTournamentId(this.tournamentList);
+		}else{
+			value.tournamentDetails.id = 0;
+		}
 		
 		//push tournament data
 		this.root.ref('tournaments/').child(parseInt(value.tournamentDetails.id)).set(value);
@@ -141,9 +140,13 @@ export class InputDataComponent implements OnInit{
 		let nonParticipantsArray : number[] = [];
 		// Loop through each submitted player from the form
 		value.playerFormsArray.forEach((player) =>{
-	
-			participantsArray.push(parseInt(player.player));
-			this.dbUpdatePlayer(player, value["tournamentDetails"])
+			if(this.updateError.value === false){
+				participantsArray.push(parseInt(player.player));
+				this.dbUpdatePlayer(player, value["tournamentDetails"]);
+			}else{
+				alert(`ERROR: ${this.updateError.message}`);
+				return;
+			}
 		});
 
 		// fix this later
@@ -157,11 +160,20 @@ export class InputDataComponent implements OnInit{
 			});
 
 			nonParticipantsArray.forEach((id) =>{
-				this.dbUpdateNonParticipant(id);
+				if(this.updateError.value === false){
+					this.dbUpdateNonParticipant(id);
+				}else{
+					alert(`ERROR: ${this.updateError.message}`);
+					return;
+				}
 			});
 
-		
-			this.calculateRanking.calculateRanking();
+			if(this.updateError.value === false){
+				
+				this.calculateRanking.calculateRanking();
+				alert('Data has been successfully updated!');
+				window.location.href = "/#/standings";
+			}
 		},2000);
 		
 
@@ -229,6 +241,7 @@ export class InputDataComponent implements OnInit{
 			score : formPlayerData.score,
 			place : formPlayerData.rank
 		};
+
 		for(let color in formPlayerData.colors){
 			if(formPlayerData.colors[color]){
 				playerTournamentData.colors.push(color);
@@ -253,7 +266,12 @@ export class InputDataComponent implements OnInit{
 				playerRef.child(parseInt(formPlayerData.player)).update(playerData);
 
 				playerRef.once('value',(snap2)=>{console.log('IN');
-					playerRef.child(parseInt(formPlayerData.player)).child('tournamentHistory').child(playerTournamentData.id).set(playerTournamentData);
+					playerRef.child(parseInt(formPlayerData.player)).child('tournamentHistory').child(playerTournamentData.id).set(playerTournamentData, function(error){
+						if (error) {
+							this.updateError.value = true;
+							this.updateError.message = error;
+						}
+					});
 					
 				});
 
@@ -296,7 +314,12 @@ export class InputDataComponent implements OnInit{
 	}
 
 	dbUpdateNonParticipant(id){
-		this.root.ref('players/' + id).child('wonLastTournament').set(false);
+		this.root.ref('players/' + id).child('wonLastTournament').set(false, function(error){
+			if (error) {
+				this.updateError.value = true;
+				this.updateError.message = error;
+			}
+		});
 	}
 
 

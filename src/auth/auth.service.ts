@@ -21,10 +21,9 @@ op
     watch(){
         return Observable.create(observer => { 
             this.afauth.authState.subscribe((user)=>{
-                console.log('user', user);
                 if(user){
                     this.userDetails.signedIn = true;
-                    this.userDetails.isAdmin = (user.email === "brysonmk1984@gmail.com" || user.email === "rdunn32@gmail.com ") ? true : false;
+                    this.userDetails.isAdmin = (user.email === "brysonmk1984@gmail.com" || user.email === "rdunn32@gmail.com") ? true : false;
                     this.userDetails.email = user.email;
                     this.userDetails.uid = user.uid;
                 }else{
@@ -66,7 +65,7 @@ op
             ).then( success =>{
                     //console.log('success', success);
                     this.userDetails.signedIn = true;
-                    this.userDetails.isAdmin = success.auth.email === "brysonmk1984@gmail.com" ? true : false;
+                    this.userDetails.isAdmin = (success.auth.email === "brysonmk1984@gmail.com" || success.auth.email === "rdunn32@gmail.com") ? true : false;
                     this.userDetails.email = success.auth.email;
                     this.userDetails.uid = success.auth.uid;
                     observer.next({success});
